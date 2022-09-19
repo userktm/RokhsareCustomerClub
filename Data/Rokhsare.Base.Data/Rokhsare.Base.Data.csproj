@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7DCACE71-DCE7-413A-9D4D-3D389DC7F4FA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rokhsare.Base.Data</RootNamespace>
+    <AssemblyName>Rokhsare.Base.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Branch.cs" />
+    <Compile Include="Models\BusinessUnit.cs" />
+    <Compile Include="Models\BusinessUnitNetwork.cs" />
+    <Compile Include="Models\BusinesUnitClubPlan.cs" />
+    <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\ClubFacture.cs" />
+    <Compile Include="Models\ClubPlan.cs" />
+    <Compile Include="Models\ClubPlanDetail.cs" />
+    <Compile Include="Models\ClubPlanGroup.cs" />
+    <Compile Include="Models\Credit.cs" />
+    <Compile Include="Models\CreditStatu.cs" />
+    <Compile Include="Models\CreditType.cs" />
+    <Compile Include="Models\DefaultClubPlan.cs" />
+    <Compile Include="Models\FactureType.cs" />
+    <Compile Include="Models\Mapping\BranchMap.cs" />
+    <Compile Include="Models\Mapping\BusinessUnitMap.cs" />
+    <Compile Include="Models\Mapping\BusinessUnitNetworkMap.cs" />
+    <Compile Include="Models\Mapping\BusinesUnitClubPlanMap.cs" />
+    <Compile Include="Models\Mapping\CardMap.cs" />
+    <Compile Include="Models\Mapping\ClubFactureMap.cs" />
+    <Compile Include="Models\Mapping\ClubPlanDetailMap.cs" />
+    <Compile Include="Models\Mapping\ClubPlanGroupMap.cs" />
+    <Compile Include="Models\Mapping\ClubPlanMap.cs" />
+    <Compile Include="Models\Mapping\CreditMap.cs" />
+    <Compile Include="Models\Mapping\CreditStatuMap.cs" />
+    <Compile Include="Models\Mapping\CreditTypeMap.cs" />
+    <Compile Include="Models\Mapping\DefaultClubPlanMap.cs" />
+    <Compile Include="Models\Mapping\FactureTypeMap.cs" />
+    <Compile Include="Models\Mapping\NetworkMap.cs" />
+    <Compile Include="Models\Mapping\ProductGroupMap.cs" />
+    <Compile Include="Models\Mapping\ProductMap.cs" />
+    <Compile Include="Models\Mapping\ProductTypeMap.cs" />
+    <Compile Include="Models\Mapping\RoleMap.cs" />
+    <Compile Include="Models\Mapping\UserMap.cs" />
+    <Compile Include="Models\Mapping\UserPlanMap.cs" />
+    <Compile Include="Models\Mapping\UserRoleMap.cs" />
+    <Compile Include="Models\Mapping\UserTypeMap.cs" />
+    <Compile Include="Models\Network.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductGroup.cs" />
+    <Compile Include="Models\ProductType.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\testRokhsarehClubDBContext.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserPlan.cs" />
+    <Compile Include="Models\UserRole.cs" />
+    <Compile Include="Models\UserType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
