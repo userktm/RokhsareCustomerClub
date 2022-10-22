@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.ModelConfiguration;
 
-namespace Rokhsare.Base.Data.Models.Mapping
+namespace Rokhsare.Models.Mapping
 {
     public class BusinessUnitMap : EntityTypeConfiguration<BusinessUnit>
     {
@@ -57,7 +57,7 @@ namespace Rokhsare.Base.Data.Models.Mapping
             this.Property(t => t.ExpireDate).HasColumnName("ExpireDate");
 
             // Relationships
-            this.HasRequired(t => t.User)
+            this.HasOptional(t => t.User)
                 .WithMany(t => t.BusinessUnits)
                 .HasForeignKey(d => d.Creator);
             this.HasOptional(t => t.User1)

@@ -1,14 +1,19 @@
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using Rokhsare.Base.Data.Models.Mapping;
+using Rokhsare.Models.Mapping;
 
-namespace Rokhsare.Base.Data.Models
+namespace Rokhsare.Models
 {
     public partial class testRokhsarehClubDBContext : DbContext
     {
         static testRokhsarehClubDBContext()
         {
             Database.SetInitializer<testRokhsarehClubDBContext>(null);
+        }
+
+        public testRokhsarehClubDBContext(string cnn)
+            : base(cnn)
+        {
         }
 
         public testRokhsarehClubDBContext()
@@ -23,13 +28,15 @@ namespace Rokhsare.Base.Data.Models
         public DbSet<Card> Cards { get; set; }
         public DbSet<ClubFacture> ClubFactures { get; set; }
         public DbSet<ClubPlanDetail> ClubPlanDetails { get; set; }
-        public DbSet<ClubPlanGroup> ClubPlanGroups { get; set; }
         public DbSet<ClubPlan> ClubPlans { get; set; }
+        public DbSet<ConfilictClubPlanGroup> ConfilictClubPlanGroups { get; set; }
         public DbSet<Credit> Credits { get; set; }
         public DbSet<CreditStatu> CreditStatus { get; set; }
         public DbSet<CreditType> CreditTypes { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
         public DbSet<DefaultClubPlan> DefaultClubPlans { get; set; }
         public DbSet<FactureType> FactureTypes { get; set; }
+        public DbSet<Job> Jobs { get; set; }
         public DbSet<Network> Networks { get; set; }
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -49,13 +56,15 @@ namespace Rokhsare.Base.Data.Models
             modelBuilder.Configurations.Add(new CardMap());
             modelBuilder.Configurations.Add(new ClubFactureMap());
             modelBuilder.Configurations.Add(new ClubPlanDetailMap());
-            modelBuilder.Configurations.Add(new ClubPlanGroupMap());
             modelBuilder.Configurations.Add(new ClubPlanMap());
+            modelBuilder.Configurations.Add(new ConfilictClubPlanGroupMap());
             modelBuilder.Configurations.Add(new CreditMap());
             modelBuilder.Configurations.Add(new CreditStatuMap());
             modelBuilder.Configurations.Add(new CreditTypeMap());
+            modelBuilder.Configurations.Add(new CurrencyMap());
             modelBuilder.Configurations.Add(new DefaultClubPlanMap());
             modelBuilder.Configurations.Add(new FactureTypeMap());
+            modelBuilder.Configurations.Add(new JobMap());
             modelBuilder.Configurations.Add(new NetworkMap());
             modelBuilder.Configurations.Add(new ProductGroupMap());
             modelBuilder.Configurations.Add(new ProductMap());

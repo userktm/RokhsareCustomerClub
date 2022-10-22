@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.ModelConfiguration;
 
-namespace Rokhsare.Base.Data.Models.Mapping
+namespace Rokhsare.Models.Mapping
 {
     public class UserMap : EntityTypeConfiguration<User>
     {
@@ -48,6 +48,7 @@ namespace Rokhsare.Base.Data.Models.Mapping
             this.Property(t => t.UserID).HasColumnName("UserID");
             this.Property(t => t.BusinessUnitId).HasColumnName("BusinessUnitId");
             this.Property(t => t.NationalNumber).HasColumnName("NationalNumber");
+            this.Property(t => t.RokhsarehUserId).HasColumnName("RokhsarehUserId");
             this.Property(t => t.UserCode).HasColumnName("UserCode");
             this.Property(t => t.CardID).HasColumnName("CardID");
             this.Property(t => t.FullName).HasColumnName("FullName");

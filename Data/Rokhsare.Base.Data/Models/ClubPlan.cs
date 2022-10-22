@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rokhsare.Base.Data.Models
+namespace Rokhsare.Models
 {
     public partial class ClubPlan
     {
@@ -9,7 +9,7 @@ namespace Rokhsare.Base.Data.Models
         {
             this.BusinesUnitClubPlans = new List<BusinesUnitClubPlan>();
             this.Cards = new List<Card>();
-            this.ClubPlanGroups = new List<ClubPlanGroup>();
+            this.ConfilictClubPlanGroups = new List<ConfilictClubPlanGroup>();
             this.DefaultClubPlans = new List<DefaultClubPlan>();
             this.UserPlans = new List<UserPlan>();
         }
@@ -21,7 +21,7 @@ namespace Rokhsare.Base.Data.Models
         public virtual ICollection<BusinesUnitClubPlan> BusinesUnitClubPlans { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ClubPlanDetail ClubPlanDetail { get; set; }
-        public virtual ICollection<ClubPlanGroup> ClubPlanGroups { get; set; }
+        public virtual ICollection<ConfilictClubPlanGroup> ConfilictClubPlanGroups { get; set; }
         public virtual ICollection<DefaultClubPlan> DefaultClubPlans { get; set; }
         public virtual ICollection<UserPlan> UserPlans { get; set; }
     }

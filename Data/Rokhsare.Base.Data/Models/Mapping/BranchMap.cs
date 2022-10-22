@@ -1,8 +1,7 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace Rokhsare.Base.Data.Models.Mapping
+namespace Rokhsare.Models.Mapping
 {
     public class BranchMap : EntityTypeConfiguration<Branch>
     {
@@ -16,6 +15,7 @@ namespace Rokhsare.Base.Data.Models.Mapping
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             this.Property(t => t.BranchName)
+                .IsRequired()
                 .HasMaxLength(50);
 
             // Table & Column Mappings
@@ -23,6 +23,7 @@ namespace Rokhsare.Base.Data.Models.Mapping
             this.Property(t => t.BranchId).HasColumnName("BranchId");
             this.Property(t => t.BusinessUnitId).HasColumnName("BusinessUnitId");
             this.Property(t => t.BranchName).HasColumnName("BranchName");
+            this.Property(t => t.BranchNumber).HasColumnName("BranchNumber");
 
             // Relationships
             this.HasRequired(t => t.BusinessUnit)

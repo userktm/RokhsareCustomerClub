@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.ModelConfiguration;
 
-namespace Rokhsare.Base.Data.Models.Mapping
+namespace Rokhsare.Models.Mapping
 {
     public class ClubPlanMap : EntityTypeConfiguration<ClubPlan>
     {
@@ -13,7 +13,7 @@ namespace Rokhsare.Base.Data.Models.Mapping
             // Properties
             this.Property(t => t.ClubPlanName)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(500);
 
             this.Property(t => t.ClubPlanDescription)
                 .HasMaxLength(500);

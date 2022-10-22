@@ -1,7 +1,7 @@
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace Rokhsare.Base.Data.Models.Mapping
+namespace Rokhsare.Models.Mapping
 {
     public class CreditStatuMap : EntityTypeConfiguration<CreditStatu>
     {
@@ -15,8 +15,7 @@ namespace Rokhsare.Base.Data.Models.Mapping
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             this.Property(t => t.CreditStatusName)
-                .IsFixedLength()
-                .HasMaxLength(10);
+                .HasMaxLength(50);
 
             // Table & Column Mappings
             this.ToTable("CreditStatus");

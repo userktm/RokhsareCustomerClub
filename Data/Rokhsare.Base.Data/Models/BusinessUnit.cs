@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rokhsare.Base.Data.Models
+namespace Rokhsare.Models
 {
     public partial class BusinessUnit
     {
@@ -23,7 +23,7 @@ namespace Rokhsare.Base.Data.Models
         public string Phone { get; set; }
         public string Address { get; set; }
         public System.DateTime CreateDate { get; set; }
-        public long Creator { get; set; }
+        public Nullable<long> Creator { get; set; }
         public Nullable<System.DateTime> ModifyDate { get; set; }
         public Nullable<long> Modifier { get; set; }
         public bool Active { get; set; }

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.ModelConfiguration;
 
-namespace Rokhsare.Base.Data.Models.Mapping
+namespace Rokhsare.Models.Mapping
 {
     public class CreditTypeMap : EntityTypeConfiguration<CreditType>
     {
@@ -11,9 +11,13 @@ namespace Rokhsare.Base.Data.Models.Mapping
             this.HasKey(t => t.CredityTypeId);
 
             // Properties
+            this.Property(t => t.CreditTypeName)
+                .HasMaxLength(50);
+
             // Table & Column Mappings
             this.ToTable("CreditType");
             this.Property(t => t.CredityTypeId).HasColumnName("CredityTypeId");
+            this.Property(t => t.CreditTypeName).HasColumnName("CreditTypeName");
         }
     }
 }

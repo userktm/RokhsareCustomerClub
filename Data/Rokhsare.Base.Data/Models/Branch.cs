@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rokhsare.Base.Data.Models
+namespace Rokhsare.Models
 {
     public partial class Branch
     {
@@ -13,6 +13,7 @@ namespace Rokhsare.Base.Data.Models
         public int BranchId { get; set; }
         public int BusinessUnitId { get; set; }
         public string BranchName { get; set; }
+        public int BranchNumber { get; set; }
         public virtual BusinessUnit BusinessUnit { get; set; }
         public virtual ICollection<ClubFacture> ClubFactures { get; set; }
     }

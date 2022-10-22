@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rokhsare.Base.Data.Models
+namespace Rokhsare.Models
 {
     public partial class User
     {
@@ -26,6 +26,7 @@ namespace Rokhsare.Base.Data.Models
         public long UserID { get; set; }
         public int BusinessUnitId { get; set; }
         public string NationalNumber { get; set; }
+        public Nullable<long> RokhsarehUserId { get; set; }
         public string UserCode { get; set; }
         public Nullable<long> CardID { get; set; }
         public string FullName { get; set; }

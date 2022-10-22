@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E131BA7F-9C22-44B6-AD04-1810FAAC3B1D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rokhsare.Service</RootNamespace>
+    <AssemblyName>Rokhsare.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\1\Source\Repos\BazaarcheOnline\Service\BazaarcheOnline.WebService\bin\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors">
+      <HintPath>C:\Users\1\Source\Repos\BazaarcheOnline\Service\BazaarcheOnline.WebService\bin\Microsoft.Owin.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Api Project\Source\ApiFile\ApiFile\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\..\..\..\..\Api Project\Test\ApiTest\ApiTest\bin\Debug\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\1\Source\Repos\BazaarcheOnline\Service\BazaarcheOnline.WebService\bin\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Api Project\Source\ApiFile\ApiFile\bin\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Tracing">
+      <HintPath>C:\Users\1\Source\Repos\BazaarcheOnline\Service\BazaarcheOnline.WebService\bin\System.Web.Http.Tracing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\1\Source\Repos\BazaarcheOnline\Service\BazaarcheOnline.WebService\bin\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Api Project\Source\ApiFile\ApiFile\bin\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\FarhangController.cs" />
+    <Compile Include="Controllers\RokhsareController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="JsonModel\JsonModel.cs" />
+    <Compile Include="Models\GeneralModel.cs" />
+    <Compile Include="Models\InMemoryMultipartFormDataStreamProvider.cs" />
+    <Compile Include="Models\MyAuthorizationServerProvider.cs" />
+    <Compile Include="Models\Token.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultModel\ResultModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dist\css\app.css" />
+    <Content Include="Content\dist\fullcalendar\locales-all.js" />
+    <Content Include="Content\dist\fullcalendar\locales\af.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ar-dz.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ar-kw.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ar-ly.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ar-ma.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ar-sa.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ar-tn.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ar.js" />
+    <Content Include="Content\dist\fullcalendar\locales\az.js" />
+    <Content Include="Content\dist\fullcalendar\locales\bg.js" />
+    <Content Include="Content\dist\fullcalendar\locales\bn.js" />
+    <Content Include="Content\dist\fullcalendar\locales\bs.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ca.js" />
+    <Content Include="Content\dist\fullcalendar\locales\cs.js" />
+    <Content Include="Content\dist\fullcalendar\locales\cy.js" />
+    <Content Include="Content\dist\fullcalendar\locales\da.js" />
+    <Content Include="Content\dist\fullcalendar\locales\de-at.js" />
+    <Content Include="Content\dist\fullcalendar\locales\de.js" />
+    <Content Include="Content\dist\fullcalendar\locales\el.js" />
+    <Content Include="Content\dist\fullcalendar\locales\en-au.js" />
+    <Content Include="Content\dist\fullcalendar\locales\en-gb.js" />
+    <Content Include="Content\dist\fullcalendar\locales\en-nz.js" />
+    <Content Include="Content\dist\fullcalendar\locales\eo.js" />
+    <Content Include="Content\dist\fullcalendar\locales\es-us.js" />
+    <Content Include="Content\dist\fullcalendar\locales\es.js" />
+    <Content Include="Content\dist\fullcalendar\locales\et.js" />
+    <Content Include="Content\dist\fullcalendar\locales\eu.js" />
+    <Content Include="Content\dist\fullcalendar\locales\fa.js" />
+    <Content Include="Content\dist\fullcalendar\locales\fi.js" />
+    <Content Include="Content\dist\fullcalendar\locales\fr-ca.js" />
+    <Content Include="Content\dist\fullcalendar\locales\fr-ch.js" />
+    <Content Include="Content\dist\fullcalendar\locales\fr.js" />
+    <Content Include="Content\dist\fullcalendar\locales\gl.js" />
+    <Content Include="Content\dist\fullcalendar\locales\he.js" />
+    <Content Include="Content\dist\fullcalendar\locales\hi.js" />
+    <Content Include="Content\dist\fullcalendar\locales\hr.js" />
+    <Content Include="Content\dist\fullcalendar\locales\hu.js" />
+    <Content Include="Content\dist\fullcalendar\locales\hy-am.js" />
+    <Content Include="Content\dist\fullcalendar\locales\id.js" />
+    <Content Include="Content\dist\fullcalendar\locales\is.js" />
+    <Content Include="Content\dist\fullcalendar\locales\it.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ja.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ka.js" />
+    <Content Include="Content\dist\fullcalendar\locales\kk.js" />
+    <Content Include="Content\dist\fullcalendar\locales\km.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ko.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ku.js" />
+    <Content Include="Content\dist\fullcalendar\locales\lb.js" />
+    <Content Include="Content\dist\fullcalendar\locales\lt.js" />
+    <Content Include="Content\dist\fullcalendar\locales\lv.js" />
+    <Content Include="Content\dist\fullcalendar\locales\mk.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ms.js" />
+    <Content Include="Content\dist\fullcalendar\locales\nb.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ne.js" />
+    <Content Include="Content\dist\fullcalendar\locales\nl.js" />
+    <Content Include="Content\dist\fullcalendar\locales\nn.js" />
+    <Content Include="Content\dist\fullcalendar\locales\pl.js" />
+    <Content Include="Content\dist\fullcalendar\locales\pt-br.js" />
+    <Content Include="Content\dist\fullcalendar\locales\pt.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ro.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ru.js" />
+    <Content Include="Content\dist\fullcalendar\locales\si-lk.js" />
+    <Content Include="Content\dist\fullcalendar\locales\sk.js" />
+    <Content Include="Content\dist\fullcalendar\locales\sl.js" />
+    <Content Include="Content\dist\fullcalendar\locales\sm.js" />
+    <Content Include="Content\dist\fullcalendar\locales\sq.js" />
+    <Content Include="Content\dist\fullcalendar\locales\sr-cyrl.js" />
+    <Content Include="Content\dist\fullcalendar\locales\sr.js" />
+    <Content Include="Content\dist\fullcalendar\locales\sv.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ta-in.js" />
+    <Content Include="Content\dist\fullcalendar\locales\th.js" />
+    <Content Include="Content\dist\fullcalendar\locales\tr.js" />
+    <Content Include="Content\dist\fullcalendar\locales\ug.js" />
+    <Content Include="Content\dist\fullcalendar\locales\uk.js" />
+    <Content Include="Content\dist\fullcalendar\locales\uz.js" />
+    <Content Include="Content\dist\fullcalendar\locales\vi.js" />
+    <Content Include="Content\dist\fullcalendar\locales\zh-cn.js" />
+    <Content Include="Content\dist\fullcalendar\locales\zh-tw.js" />
+    <Content Include="Content\dist\fullcalendar\main.css" />
+    <Content Include="Content\dist\fullcalendar\main.js" />
+    <Content Include="Content\dist\images\1.png" />
+    <Content Include="Content\dist\images\bg-login-page.png" />
+    <Content Include="Content\dist\images\icon.png" />
+    <Content Include="Content\dist\images\languages-png.png" />
+    <Content Include="Content\dist\images\logo.svg" />
+    <Content Include="Content\dist\images\preloader.gif" />
+    <Content Include="Content\dist\images\preloaders.gif" />
+    <Content Include="Content\dist\images\Recycle-Sorting.jpg" />
+    <Content Include="Content\dist\images\recycling.jpg" />
+    <Content Include="Content\dist\jquery-confirm\jquery-confirm.min.css" />
+    <Content Include="Content\dist\jquery-confirm\jquery-confirm.min.js" />
+    <Content Include="Content\dist\js\app.js" />
+    <Content Include="Content\dist\js\jquery-1.10.2.js" />
+    <Content Include="Content\dist\js\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Content\dist\spotlight\spotlight.min.css" />
+    <Content Include="Content\dist\spotlight\spotlight.min.js" />
+    <Content Include="Content\Information-Technology-PNG-Transparent.png" />
+    <Content Include="Content\jquery-notifyjs\notify.min.js" />
+    <Content Include="Content\jquery-notifyjs\styles\metro\notify-metro.css" />
+    <Content Include="Content\jquery-notifyjs\styles\metro\notify-metro.js" />
+    <Content Include="Content\PersianDatePicker\css\persian-datepicker.css" />
+    <Content Include="Content\PersianDatePicker\css\persian-datepicker.min.css" />
+    <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-blue.min.css" />
+    <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-cheerup.min.css" />
+    <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-dark.min.css" />
+    <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-redblack.min.css" />
+    <Content Include="Content\PersianDatePicker\js\persian-date.js" />
+    <Content Include="Content\PersianDatePicker\js\persian-datepicker.js" />
+    <Content Include="Content\PersianDatePicker\js\persian-datepicker.min.js" />
+    <Content Include="Content\preloader\9-3.gif" />
+    <Content Include="Content\preloader\deskanimate.gif" />
+    <Content Include="Content\technology-png-transparent-technology-png-530_382.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanwebbold.eot" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanwebbold.ttf" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanwebbold.woff" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanwebbold.woff2" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanweblight.eot" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanweblight.ttf" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanweblight.woff" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanweblight.woff2" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanwebregular.eot" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanwebregular.ttf" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanwebregular.woff" />
+    <Content Include="Content\dist\font\iranyekan\iranyekanwebregular.woff2" />
+    <Content Include="Content\PersianDatePicker\css\persian-datepicker.min.css.map" />
+    <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-blue.min.css.map" />
+    <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-cheerup.min.css.map" />
+    <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-dark.min.css.map" />
+    <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-redblack.min.css.map" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Code\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Home\" />
+    <Folder Include="Views\Rokhsare\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Rokhsare.Cache\Rokhsare.Cache.csproj">
+      <Project>{ddf4b731-dc41-4adb-98e8-4517a11cd04f}</Project>
+      <Name>Rokhsare.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Rokhsare.Common.Model\Rokhsare.Common.Model.csproj">
+      <Project>{1c2e0743-c92f-4255-be05-d4ef1316a9be}</Project>
+      <Name>Rokhsare.Common.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Rokhsare.Data\Rokhsare.Data.csproj">
+      <Project>{acdf5d5a-98b0-4cee-8ed9-dcdad7c4b8dc}</Project>
+      <Name>Rokhsare.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Rokhsare.Enumeration\Rokhsare.Enumeration.csproj">
+      <Project>{d5d751b0-0ed2-42cc-9c08-e044dddd2ad0}</Project>
+      <Name>Rokhsare.Enumeration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Rokhsare.Utility\Rokhsare.Utility.csproj">
+      <Project>{2b4a6a34-81bc-49b7-8d3e-ceba369cf54d}</Project>
+      <Name>Rokhsare.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\Rokhsare.Base.Data\Rokhsare.Base.Data.csproj">
+      <Project>{7dcace71-dce7-413a-9d4d-3d389dc7f4fa}</Project>
+      <Name>Rokhsare.Base.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SysAdmin\Rokhsare.ConfigReader\Rokhsare.ConfigReader.csproj">
+      <Project>{c6cfdeaf-e63f-4e83-aca4-2d61da2f3865}</Project>
+      <Name>Rokhsare.ConfigReader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SysAdmin\Rokhsare.Control.Base\Rokhsare.Control.Base.csproj">
+      <Project>{146b2d08-675f-48a1-822c-b784cb346309}</Project>
+      <Name>Rokhsare.Control.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>34546</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:34546/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
