@@ -85,6 +85,9 @@
     <Compile Include="Models\Mapping\ProductMap.cs" />
     <Compile Include="Models\Mapping\ProductTypeMap.cs" />
     <Compile Include="Models\Mapping\RoleMap.cs" />
+    <Compile Include="Models\Mapping\SMSTemplateMap.cs" />
+    <Compile Include="Models\Mapping\SMSTemplateTokenMap.cs" />
+    <Compile Include="Models\Mapping\SMSTemplateTypeMap.cs" />
     <Compile Include="Models\Mapping\UserMap.cs" />
     <Compile Include="Models\Mapping\UserPlanMap.cs" />
     <Compile Include="Models\Mapping\UserRoleMap.cs" />
@@ -94,6 +97,9 @@
     <Compile Include="Models\ProductGroup.cs" />
     <Compile Include="Models\ProductType.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\SMSTemplate.cs" />
+    <Compile Include="Models\SMSTemplateToken.cs" />
+    <Compile Include="Models\SMSTemplateType.cs" />
     <Compile Include="Models\testRokhsarehClubDBContext.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserPlan.cs" />

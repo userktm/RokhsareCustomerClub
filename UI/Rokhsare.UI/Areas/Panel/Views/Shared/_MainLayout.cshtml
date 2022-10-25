@@ -1,0 +1,265 @@
+﻿@{
+    string Title = "رخساره";
+    if (ViewBag.Title != null)
+    {
+        Title = Title + " | " + ViewBag.Title;
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="keywords" content="@ViewBag.Keywords">
+    <meta name="author" content="MohammadrezaAberi">
+
+    <script src="~/Content/AdminPanel/libs/ckeditor/ckeditor.js"></script>
+
+    <!-- Base Css Files -->
+    <link href="~/Content/AdminPanel/libs/jqueryui/ui-lightness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/fontello/css/fontello.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/animate-css/animate.min.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/nifty-modal/css/component.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/magnific-popup/magnific-popup.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/ios7-switch/ios7-switch.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/pace/pace.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/sortable/sortable-theme-bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/AdminPanel/libs/jquery-icheck/skins/all.css" rel="stylesheet" />
+
+    <!-- Code Highlighter for Demo -->
+    <link href="~/Content/AdminPanel/libs/prettify/github.css" rel="stylesheet" />
+
+    <!-- Extra CSS Libraries Start -->
+    <link href="~/Content/AdminPanel/libs/rickshaw/rickshaw.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/morrischart/morris.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/jquery-jvectormap/css/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/jquery-clock/clock.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/bootstrap-calendar/css/bic_calendar.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/sortable/sortable-theme-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/jquery-weather/simpleweather.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/bootstrap-xeditable/css/bootstrap-editable.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/jquery-notifyjs/styles/metro/notify-metro.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/rtl.css" rel="stylesheet" type="text/css" />
+    <!-- Extra CSS Libraries End -->
+    <!-- Extra CSS Libraries Start -->
+    <link href="~/Content/AdminPanel/libs/jquery-datatables/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/jquery-datatables/extensions/TableTools/css/dataTables.tableTools.css" rel="stylesheet" type="text/css" />
+    <!-- Extra CSS Libraries End -->
+    <!-- Extra CSS Libraries Start -->
+    <link href="~/Content/AdminPanel/libs/dropzone/css/dropzone.css" rel="stylesheet" type="text/css" />
+    <!-- Extra CSS Libraries End -->
+
+    <link href="~/Content/AdminPanel/style-responsive.css" rel="stylesheet" />
+
+    <!-- Extra CSS Libraries Start -->
+    <link href="~/Content/AdminPanel/libs/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/bootstrap-select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/bootstrap-xeditable/css/bootstrap-editable.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminPanel/libs/bootstrap-select2/select2.css" rel="stylesheet" type="text/css" />
+    <!-- Extra CSS Libraries End -->
+    <!--JS Base-->
+    <script src="~/Content/AdminPanel/libs/jquery/jquery-1.11.1.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap/js/bootstrap.min.js"></script>
+
+    <link rel="shortcut icon" href="~/Content/LandingPage/assets/img/favicon.ico">
+</head>
+<body>
+    <div>
+
+        <div id="modal-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="gm-title"></h4>
+                    </div>
+                    <div id="DialogContent">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Task Progress -->
+        <div class="md-modal md-3d-flip-vertical" id="task-progress">
+            <div class="md-content">
+                <h3><strong>نوار وظیفه </strong> اطلاعات</h3>
+                <div>
+                    <p>پاک کردن خطاها</p>
+                    <div class="progress progress-xs for-modal">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                            <span class="sr-only">80&#37; کامل شد</span>
+                        </div>
+                    </div>
+                    <p>ارسال یک مورد</p>
+                    <div class="progress progress-xs for-modal">
+                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 65%">
+                            <span class="sr-only">65&#37; کامل شد</span>
+                        </div>
+                    </div>
+                    <p>پشتیبان گیری از سرور</p>
+                    <div class="progress progress-xs for-modal">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
+                            <span class="sr-only">95&#37; کامل شد</span>
+                        </div>
+                    </div>
+                    <p>طراحی مجدد برنامه وب</p>
+                    <div class="progress progress-xs for-modal">
+                        <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            <span class="sr-only">100&#37; کامل شد</span>
+                        </div>
+                    </div>
+                    <p class="text-center">
+                        <button class="btn btn-danger btn-sm md-close">بستن</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Logout -->
+        <div class="md-modal md-just-me" id="logout-modal">
+            <div class="md-content">
+                <h3><strong>میخواهید خارج شوید</strong> </h3>
+                <div>
+                    <p class="text-center">آیا مطمئن هستید که می خواهید از سیستم   خارج شوید؟</p>
+                    <p class="text-center">
+                        <button class="btn btn-danger md-close">خیر </button>
+                        <a href="login.html" class="btn btn-success md-close">بله ، من مطمنم</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Modal End -->
+
+    </div>
+
+    <script type="text/javascript">
+        function showmodal(title) {
+            $("#gm-title").html(title);
+            $("#modal-dialog").modal();
+            $.fn.modal.Constructor.prototype.enforceFocus = function () { };
+        }
+        function hidemodal() {
+            $("#modal-dialog").modal('toggle');
+        }
+
+        function showmodal1(title) {
+            $("#gm-title1").html(title);
+            $("#modal-dialog1").modal();
+            $.fn.modal.Constructor.prototype.enforceFocus = function () { };
+        }
+        function hidemodal1() {
+            $("#modal-dialog1").modal('toggle');
+        }
+
+        function showmodal2(title) {
+            $("#gm-title2").html(title);
+            $("#modal-dialog2").modal();
+            $.fn.modal.Constructor.prototype.enforceFocus = function () { };
+        }
+        function hidemodal2() {
+            $("#modal-dialog2").modal('toggle');
+        }
+
+        function shownotification(style, title, text) {
+            if (style == "error") {
+                icon = "<i class='fa fa-exclamation'></i>";
+            } else if (style == "warning") {
+                icon = "<i class='fa fa-warning'></i>";
+            } else if (style == "success") {
+                icon = "<i class='fa fa-check'></i>";
+            } else if (style == "info") {
+                icon = "<i class='fa fa-question'></i>";
+            } else {
+                icon = "<i class='fa fa-circle-o'></i>";
+            }
+            $.notify({
+                title: title,
+                text: text,
+                image: icon
+            }, {
+                    style: 'metro',
+                    className: style,
+                    globalPosition: 'top right',
+                    showAnimation: "fadeIn",
+                    hideAnimation: "fadeOut",
+                    showDuration: 0,
+                    hideDuration: 0,
+                    autoHideDelay: 6000,
+                    autoHide: true,
+                    clickToHide: true
+                });
+        }
+    </script>
+
+    <script src="~/Content/AdminPanel/libs/jqueryui/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-ui-touch/jquery.ui.touch-punch.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-detectmobile/detect.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-animate-numbers/jquery.animateNumbers.js"></script>
+    <script src="~/Content/AdminPanel/libs/ios7-switch/ios7.switch.js"></script>
+    <script src="~/Content/AdminPanel/libs/fastclick/fastclick.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-blockui/jquery.blockUI.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-bootbox/bootbox.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-sparkline/jquery-sparkline.js"></script>
+    <script src="~/Content/AdminPanel/libs/nifty-modal/js/classie.js"></script>
+    <script src="~/Content/AdminPanel/libs/nifty-modal/js/modalEffects.js"></script>
+    <script src="~/Content/AdminPanel/libs/sortable/sortable.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-fileinput/bootstrap.file-input.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-select2/select2.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/pace/pace.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-icheck/icheck.min.js"></script>
+    <!-- Demo Specific JS Libraries -->
+    <script src="~/Content/AdminPanel/libs/prettify/prettify.js"></script>
+    <!-- Page Specific JS Libraries -->
+    <script src="~/Content/AdminPanel/libs/d3/d3.v3.js"></script>
+    <script src="~/Content/AdminPanel/libs/rickshaw/rickshaw.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/raphael/raphael-min.js"></script>
+    <script src="~/Content/AdminPanel/libs/morrischart/morris.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-knob/jquery.knob.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-jvectormap/js/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-jvectormap/js/jquery-jvectormap-us-aea-en.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-clock/clock.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-easypiechart/jquery.easypiechart.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-xeditable/js/bootstrap-editable.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-calendar/js/bic_calendar.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-datatables/js/dataTables.bootstrap.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-notifyjs/notify.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-notifyjs/styles/metro/notify-metro.js"></script>
+    <script src="~/Content/AdminPanel/libs/dropzone/dropzone.min.js"></script>
+    <!-- Page Specific JS Libraries -->
+    <script src="~/Content/AdminPanel/libs/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-inputmask/inputmask.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-xeditable/js/bootstrap-editable.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-xeditable/demo/jquery.mockjax.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-xeditable/demo/demo-mock.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-select2/select2.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/jquery-clndr/moment-2.5.1.js"></script>
+    <script src="~/Content/AdminPanel/libs/bootstrap-typeahead/bootstrap3-typeahead.min.js"></script>
+    <script src="~/Content/AdminPanel/libs/ckeditor/ckeditor.js"></script>
+    <script src="~/Content/AdminPanel/libs/ckeditor/adapters/jquery.js"></script>
+
+    <script src="~/Scripts/pages/notifications.js"></script>
+    <script src="~/Scripts/pages/advanced-forms.js"></script>
+    <script src="~/Scripts/pages/datatables.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/apps/calculator.js"></script>
+    <script src="~/Scripts/apps/todo.js"></script>
+    <script src="~/Scripts/apps/notes.js"></script>
+    <script src="~/Scripts/init.js"></script>
+</body>
+</html>

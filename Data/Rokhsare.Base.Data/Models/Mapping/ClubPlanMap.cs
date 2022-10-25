@@ -24,6 +24,8 @@ namespace Rokhsare.Models.Mapping
             this.Property(t => t.ClubPlanDetailId).HasColumnName("ClubPlanDetailId");
             this.Property(t => t.ClubPlanName).HasColumnName("ClubPlanName");
             this.Property(t => t.ClubPlanDescription).HasColumnName("ClubPlanDescription");
+            this.Property(t => t.CreditEnhanceSMSTemplate).HasColumnName("CreditEnhanceSMSTemplate");
+            this.Property(t => t.CreditReduceSMSTemplate).HasColumnName("CreditReduceSMSTemplate");
 
             // Relationships
             this.HasRequired(t => t.ClubPlanDetail)

@@ -46,6 +46,9 @@ namespace Rokhsare.Models
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<SMSTemplate> SMSTemplates { get; set; }
+        public DbSet<SMSTemplateToken> SMSTemplateTokens { get; set; }
+        public DbSet<SMSTemplateType> SMSTemplateTypes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -74,6 +77,9 @@ namespace Rokhsare.Models
             modelBuilder.Configurations.Add(new UserRoleMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new UserTypeMap());
+            modelBuilder.Configurations.Add(new SMSTemplateMap());
+            modelBuilder.Configurations.Add(new SMSTemplateTokenMap());
+            modelBuilder.Configurations.Add(new SMSTemplateTypeMap());
         }
     }
 }
