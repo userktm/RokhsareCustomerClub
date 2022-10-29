@@ -26,4 +26,16 @@ namespace Rokhsare.Service.JsonModel
         public Nullable<int> Creator { get; set; }
         public string CreatorName { get; set; }
     }
+
+    public class UseCreditFactureJsonModel
+    {
+        public List<FactureViewJsonModel> Factures { get; set; }
+        public int CreditPrice { get; set; }
+    }
+
+    public class UserAmountJsonModel
+    {
+        public string UserMobile { get; set; }
+        public string UserCode { get; set; }
+    }
 }

@@ -18,9 +18,8 @@ namespace Rokhsare.Models
         public int ClubPlanDetailId { get; set; }
         public string ClubPlanName { get; set; }
         public string ClubPlanDescription { get; set; }
-        public string CreditEnhanceSMSTemplate { get; set; }
-        public string CreditReduceSMSTemplate { get; set; }
         public virtual ICollection<BusinesUnitClubPlan> BusinesUnitClubPlans { get; set; }
+        public virtual ICollection<SMSTemplate> SMSTemplates { get; set; }
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ClubPlanDetail ClubPlanDetail { get; set; }
         public virtual ICollection<ConfilictClubPlanGroup> ConfilictClubPlanGroups { get; set; }

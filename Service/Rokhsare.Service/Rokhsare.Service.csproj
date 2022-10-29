@@ -323,6 +323,7 @@
     <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-cheerup.min.css.map" />
     <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-dark.min.css.map" />
     <Content Include="Content\PersianDatePicker\css\theme\persian-datepicker-redblack.min.css.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
