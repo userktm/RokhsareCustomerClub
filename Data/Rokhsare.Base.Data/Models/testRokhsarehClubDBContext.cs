@@ -27,11 +27,12 @@ namespace Rokhsare.Models
         public DbSet<BusinesUnitClubPlan> BusinesUnitClubPlans { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<ClubFacture> ClubFactures { get; set; }
+        public DbSet<ClubFactureStaus> ClubFactureStaus { get; set; }
         public DbSet<ClubPlanDetail> ClubPlanDetails { get; set; }
         public DbSet<ClubPlan> ClubPlans { get; set; }
         public DbSet<ConfilictClubPlanGroup> ConfilictClubPlanGroups { get; set; }
         public DbSet<Credit> Credits { get; set; }
-        public DbSet<CreditStatu> CreditStatus { get; set; }
+        public DbSet<CreditStatus> CreditStatus { get; set; }
         public DbSet<CreditType> CreditTypes { get; set; }
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<DefaultClubPlan> DefaultClubPlans { get; set; }
@@ -58,11 +59,12 @@ namespace Rokhsare.Models
             modelBuilder.Configurations.Add(new BusinesUnitClubPlanMap());
             modelBuilder.Configurations.Add(new CardMap());
             modelBuilder.Configurations.Add(new ClubFactureMap());
+            modelBuilder.Configurations.Add(new ClubFactureStausMap());
             modelBuilder.Configurations.Add(new ClubPlanDetailMap());
             modelBuilder.Configurations.Add(new ClubPlanMap());
             modelBuilder.Configurations.Add(new ConfilictClubPlanGroupMap());
             modelBuilder.Configurations.Add(new CreditMap());
-            modelBuilder.Configurations.Add(new CreditStatuMap());
+            modelBuilder.Configurations.Add(new CreditStatusMap());
             modelBuilder.Configurations.Add(new CreditTypeMap());
             modelBuilder.Configurations.Add(new CurrencyMap());
             modelBuilder.Configurations.Add(new DefaultClubPlanMap());

@@ -3,9 +3,9 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Rokhsare.Models.Mapping
 {
-    public class CreditStatuMap : EntityTypeConfiguration<CreditStatu>
+    public class CreditStatusMap : EntityTypeConfiguration<CreditStatus>
     {
-        public CreditStatuMap()
+        public CreditStatusMap()
         {
             // Primary Key
             this.HasKey(t => t.CreditStatusId);

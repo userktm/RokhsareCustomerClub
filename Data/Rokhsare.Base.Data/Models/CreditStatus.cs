@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Rokhsare.Models
 {
-    public partial class CreditStatu
+    public partial class CreditStatus
     {
-        public CreditStatu()
+        public CreditStatus()
         {
             this.Credits = new List<Credit>();
         }

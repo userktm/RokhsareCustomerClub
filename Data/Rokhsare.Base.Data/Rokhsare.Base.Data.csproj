@@ -54,11 +54,12 @@
     <Compile Include="Models\BusinesUnitClubPlan.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\ClubFacture.cs" />
+    <Compile Include="Models\ClubFactureStaus.cs" />
     <Compile Include="Models\ClubPlan.cs" />
     <Compile Include="Models\ClubPlanDetail.cs" />
     <Compile Include="Models\ConfilictClubPlanGroup.cs" />
     <Compile Include="Models\Credit.cs" />
-    <Compile Include="Models\CreditStatu.cs" />
+    <Compile Include="Models\CreditStatus.cs" />
     <Compile Include="Models\CreditType.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\DefaultClubPlan.cs" />
@@ -70,11 +71,12 @@
     <Compile Include="Models\Mapping\BusinesUnitClubPlanMap.cs" />
     <Compile Include="Models\Mapping\CardMap.cs" />
     <Compile Include="Models\Mapping\ClubFactureMap.cs" />
+    <Compile Include="Models\Mapping\ClubFactureStausMap.cs" />
     <Compile Include="Models\Mapping\ClubPlanDetailMap.cs" />
     <Compile Include="Models\Mapping\ClubPlanMap.cs" />
     <Compile Include="Models\Mapping\ConfilictClubPlanGroupMap.cs" />
     <Compile Include="Models\Mapping\CreditMap.cs" />
-    <Compile Include="Models\Mapping\CreditStatuMap.cs" />
+    <Compile Include="Models\Mapping\CreditStatusMap.cs" />
     <Compile Include="Models\Mapping\CreditTypeMap.cs" />
     <Compile Include="Models\Mapping\CurrencyMap.cs" />
     <Compile Include="Models\Mapping\DefaultClubPlanMap.cs" />

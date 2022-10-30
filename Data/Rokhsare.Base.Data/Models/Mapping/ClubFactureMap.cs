@@ -33,8 +33,12 @@ namespace Rokhsare.Models.Mapping
             this.Property(t => t.BranchId).HasColumnName("BranchId");
             this.Property(t => t.Creator).HasColumnName("Creator");
             this.Property(t => t.CreatorDate).HasColumnName("CreatorDate");
+            this.Property(t => t.ClubFactureStatusId).HasColumnName("ClubFactureStatusId");
 
             // Relationships
+            this.HasRequired(t => t.ClubFactureStaus)
+                .WithMany(t => t.ClubFactures)
+                .HasForeignKey(d => d.ClubFactureStatusId);
             this.HasOptional(t => t.Branch)
                 .WithMany(t => t.ClubFactures)
                 .HasForeignKey(d => d.BranchId);

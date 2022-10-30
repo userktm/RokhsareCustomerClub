@@ -26,6 +26,8 @@ namespace Rokhsare.Models
         public Nullable<int> BranchId { get; set; }
         public long Creator { get; set; }
         public System.DateTime CreatorDate { get; set; }
+        public int ClubFactureStatusId { get; set; }
+        public virtual ClubFactureStaus ClubFactureStaus { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual BusinessUnit BusinessUnit { get; set; }
         public virtual FactureType FactureType { get; set; }
