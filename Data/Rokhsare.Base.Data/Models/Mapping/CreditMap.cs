@@ -36,8 +36,8 @@ namespace Rokhsare.Models.Mapping
             this.HasRequired(t => t.CreditStatu)
                 .WithMany(t => t.Credits)
                 .HasForeignKey(d => d.CreditStatusId);
-            this.HasRequired(t => t.Credit2)
-                .WithOptional(t => t.Credit1);
+            //this.HasRequired(t => t.Credit2)
+            //    .WithOptional(t => t.Credit1);
             this.HasRequired(t => t.User)
                 .WithMany(t => t.Credits)
                 .HasForeignKey(d => d.Creator);

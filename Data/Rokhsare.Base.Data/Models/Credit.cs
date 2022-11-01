@@ -22,8 +22,8 @@ namespace Rokhsare.Models
         public Nullable<System.DateTime> ModifireDate { get; set; }
         public virtual ClubFacture ClubFacture { get; set; }
         public virtual CreditStatus CreditStatu { get; set; }
-        public virtual Credit Credit1 { get; set; }
-        public virtual Credit Credit2 { get; set; }
+        //public virtual Credit Credit1 { get; set; }
+        //public virtual Credit Credit2 { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         public virtual User User2 { get; set; }
