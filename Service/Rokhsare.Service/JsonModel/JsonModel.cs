@@ -28,6 +28,8 @@ namespace Rokhsare.Service.JsonModel
         public string CreatorName { get; set; }
         public string CreatorMobile { get; set; }
         public int IsDeleted { get; set; }
+        public Nullable<int> ClubBusinessUnitID { get; set; }
+        public Nullable<int> ClubBranchID { get; set; }
     }
 
     public class UseCreditFactureJsonModel
@@ -40,5 +42,7 @@ namespace Rokhsare.Service.JsonModel
     {
         public string UserMobile { get; set; }
         public string UserCode { get; set; }
+        public int BusinesID { get; set; }
+        public int BranchID { get; set; }
     }
 }

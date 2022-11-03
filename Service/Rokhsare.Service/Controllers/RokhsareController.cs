@@ -44,25 +44,24 @@ namespace Rokhsare.Service.Controllers
 
                     if (token == "42345")
                     {
+                        // با توجه به اینکه تعداد رکورد ها ممکن است بیش از 1 باشد، و بعضی فیلدهای رکورد ها یکسان است
+                        // ما اطلاعات یک فیلد را دریافت و برای مشخص شدن اطلاعاتی نظیر کاربر و مبلغ پرداختی استفاده میکنیم
+                        var firstrecored = jsonmodel.First();
 
                         // بررسی club plan مربوط به business
-                        if (RokhsarehClubDb.BusinesUnitClubPlans.Any(u => u.BusinesUnitId == 1) || RokhsarehClubDb.DefaultClubPlans.Any(u => u.BusinessUnitId == 1))
+                        if (RokhsarehClubDb.BusinesUnitClubPlans.Any(u => u.BusinesUnitId == firstrecored.ClubBusinessUnitID) || RokhsarehClubDb.DefaultClubPlans.Any(u => u.BusinessUnitId == firstrecored.ClubBranchID))
                         {
-                            var businessunitclubplan = RokhsarehClubDb.BusinesUnitClubPlans.FirstOrDefault(u => u.BusinesUnitId == 1).ClubPlan;
+                            var businessunitclubplan = RokhsarehClubDb.BusinesUnitClubPlans.FirstOrDefault(u => u.BusinesUnitId == firstrecored.ClubBusinessUnitID).ClubPlan;
                             var clubplanid = RokhsarehClubDb.ClubPlanDetails.FirstOrDefault(u => u.ClubPlanDetailId == businessunitclubplan.ClubPlanDetailId);
-                            var businessunit = RokhsarehClubDb.BusinessUnits.FirstOrDefault(u => u.BusinessUnitId == 1);
-
-                            // با توجه به اینکه تعداد رکورد ها ممکن است بیش از 1 باشد، و بعضی فیلدهای رکورد ها یکسان است
-                            // ما اطلاعات یک فیلد را دریافت و برای مشخص شدن اطلاعاتی نظیر کاربر و مبلغ پرداختی استفاده میکنیم
-                            var firstrecored = jsonmodel.First();
+                            var businessunit = RokhsarehClubDb.BusinessUnits.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
 
                             // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
                             string ebMobileNumber = GetEncrypt(firstrecored.UserMobile);
                             // بررسی اینکه آیا اطلاعات ارسال شده مربوط به کاربر، وجود دارد یا خیر
-                            if (!RokhsarehClubDb.Users.Any(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName))
+                            if (!RokhsarehClubDb.Users.Any(u => (u.UserCode == firstrecored.UserCode || u.MobileNumber == ebMobileNumber) && u.FullName == firstrecored.UserName))
                             {
                                 Rokhsare.Models.User userdb = new User();
-                                userdb.BusinessUnitId = 1;
+                                userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                                 //userdb.NationalNumber = "";
                                 userdb.RokhsarehUserId = firstrecored.UserId;
                                 userdb.UserCode = firstrecored.UserCode;
@@ -87,6 +86,19 @@ namespace Rokhsare.Service.Controllers
 
                                 RokhsarehClubDb.UserRoles.Add(userRole);
                             }
+                            else
+                            {
+                                // در اینجا بررسی میکنیم کاربر موجود چنانچه شماره موبایلش عوض شده باشد در پایگاه داده تغییر میدهیم
+                                var defaultuser = RokhsarehClubDb.Users.FirstOrDefault(u => (u.UserCode == firstrecored.UserCode || u.MobileNumber == ebMobileNumber) && u.FullName == firstrecored.UserName);
+
+                                string EebMobileNumber = GetEncrypt(defaultuser.MobileNumber);
+                                if(ebMobileNumber != EebMobileNumber)
+                                {
+                                    defaultuser.MobileNumber = ebMobileNumber;
+                                    RokhsarehClubDb.SaveChanges();
+                                }
+
+                            }
 
                             // در اینجا فرستنده را در پایگاه داده چک میکنیم
                             // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
@@ -96,7 +108,7 @@ namespace Rokhsare.Service.Controllers
                             {
                                 // اگر فرستنده که نقش کارمند دارد در پایگاه داده وجود نداشت، ایجاد میکنیم
                                 Rokhsare.Models.User userdb = new User();
-                                userdb.BusinessUnitId = 1;
+                                userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                                 //userdb.NationalNumber = "";
                                 userdb.RokhsarehUserId = firstrecored.Creator;
                                 userdb.UserCode = firstrecored.CreatorCode;
@@ -130,7 +142,7 @@ namespace Rokhsare.Service.Controllers
                                 if (!RokhsarehClubDb.Products.Any(u => u.ProductName == item.ProductName))
                                 {
                                     Product product = new Product();
-                                    product.BusinessUnitId = 1;
+                                    product.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                                     product.ProductTypeId = item.ProductTypeId;
                                     product.ProductName = item.ProductName;
                                     product.ProductCode = "1";
@@ -139,10 +151,10 @@ namespace Rokhsare.Service.Controllers
                                 }
 
                                 // اضافه کردن اطلاعات در جدول  Product Group
-                                if (!RokhsarehClubDb.ProductGroups.Any(u => u.ProductGroupName == item.ProductGroupName && u.BusinessUnitId == 1) && item.ProductGroupName != null)
+                                if (!RokhsarehClubDb.ProductGroups.Any(u => u.ProductGroupName == item.ProductGroupName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID) && item.ProductGroupName != null)
                                 {
                                     ProductGroup productGroup = new ProductGroup();
-                                    productGroup.BusinessUnitId = 1;
+                                    productGroup.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                                     productGroup.ProductGroupName = item.ProductGroupName;
 
                                     RokhsarehClubDb.ProductGroups.Add(productGroup);
@@ -167,17 +179,19 @@ namespace Rokhsare.Service.Controllers
                             {
                                 // بررسی فاکتور های ذخیره شده
                                 // ابتدا محصولی ثبت شده در پایگاه داده را پیدا میکنیم
-                                var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == 1 && u.ProductName == item.ProductName);
-                                if (RokhsarehClubDb.ClubFactures.Any(u => u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.ProductName == item.ProductName))
+                                var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.ProductName == item.ProductName);
+                                if (RokhsarehClubDb.ClubFactures.Any(u => u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
                                 {
                                     // در این جا مشخص شده این فاکتور وجود داشته و نیاز به ویرایش دارد
                                     // ابتدا بررسی میکنیم وضعیت آن به حالت حذف شده در آمده یا نه
 
-                                    var updatedfacture = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId);
+                                    var updatedfacture = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
                                     if (item.IsDeleted == 1)
                                     {
                                         // در این جا مشخص شده است که وضعیت فاکتور به حالت حذف شده در آمده است
                                         updatedfacture.ClubFactureStatusId = 3;
+
+                                        RokhsarehClubDb.Database.SqlQuery<ClubFacture>("");
 
                                         // بعد از تغییر فاکتور، credit آن را نیز تغییر میدهیم
                                         var facturecredit = RokhsarehClubDb.Credits.FirstOrDefault(u => u.ClubFactureId == updatedfacture.ClubFactureId);
@@ -193,7 +207,7 @@ namespace Rokhsare.Service.Controllers
                                         facturecredit.CreditStatusId = 3;
                                     }
                                     else
-                                    {
+                                    {                                   
                                         // در اینجا مشخص است وضعیت فاکتور به حالت تغییر یافته درآمده است
                                         // بعد از تغییر فاکنور credit آن را هم عوض میکنیم
                                         updatedfacture.FactureId = item.FactureId;
@@ -207,9 +221,9 @@ namespace Rokhsare.Service.Controllers
                                             updatedfacture.ProductGroupId = RokhsarehClubDb.ProductGroups.FirstOrDefault(u => u.ProductGroupName == item.ProductGroupName && u.BusinessUnitId == 1).ProductGroupId;
                                         updatedfacture.ProductName = item.ProductName;
                                         updatedfacture.ProductCount = item.ProductCount;
-                                        updatedfacture.BranchId = 1;
+                                        updatedfacture.BranchId = firstrecored.ClubBranchID;
                                         if (item.Creator.HasValue)
-                                            updatedfacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID; ;
+                                            updatedfacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                                         updatedfacture.CreatorDate = DateTime.Now;
                                         updatedfacture.ClubFactureStatusId = 2;
 
@@ -233,7 +247,7 @@ namespace Rokhsare.Service.Controllers
                                 {
                                     // ذخیره  سازی در جدول Club Facture
                                     ClubFacture clubFacture = new ClubFacture();
-                                    clubFacture.BusinessUnitId = 1;
+                                    clubFacture.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                                     clubFacture.FactureId = item.FactureId;
                                     clubFacture.FactureTypeId = item.FactureTypeId;
                                     clubFacture.UserId = user.UserID;
@@ -243,7 +257,7 @@ namespace Rokhsare.Service.Controllers
                                     clubFacture.ProductId = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductTypeId == item.ProductTypeId && u.ProductName == item.ProductName).ProductId;
                                     clubFacture.ProductPrice = item.ProductPrice;
                                     if (item.ProductGroupName != null)
-                                        clubFacture.ProductGroupId = RokhsarehClubDb.ProductGroups.FirstOrDefault(u => u.ProductGroupName == item.ProductGroupName && u.BusinessUnitId == 1).ProductGroupId;
+                                        clubFacture.ProductGroupId = RokhsarehClubDb.ProductGroups.FirstOrDefault(u => u.ProductGroupName == item.ProductGroupName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID).ProductGroupId;
                                     clubFacture.ProductName = item.ProductName;
                                     clubFacture.ProductCount = item.ProductCount;
                                     clubFacture.BranchId = 1;
@@ -261,8 +275,8 @@ namespace Rokhsare.Service.Controllers
                                     // دریافت مجموع اعتبار های دریافتی مشتری
                                     sumcreditamount += credit.CreditAmount;
 
-                                    int productiditem = Convert.ToInt32(RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == 1 && u.ProductName == item.ProductName && u.ProductTypeId == item.ProductTypeId).ProductId);
-                                    credit.ClubFactureId = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId && u.BusinessUnitId == 1 && u.BranchId == 1 && u.ProductId == productiditem).ClubFactureId;
+                                    int productiditem = Convert.ToInt32(RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.ProductName == item.ProductName && u.ProductTypeId == item.ProductTypeId).ProductId);
+                                    credit.ClubFactureId = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.BranchId == firstrecored.ClubBranchID && u.ProductId == productiditem).ClubFactureId;
 
                                     if(RokhsarehClubDb.Credits.Count() == 0)
                                         credit.TotalCreditNow = credit.CreditAmount;
@@ -307,19 +321,20 @@ namespace Rokhsare.Service.Controllers
                                 if (smstemplatetokens.Count() == 3)
                                 {
                                     // جاگذاری اطلاعات مربوط به token
-                                    string token1 = user.UserName;
-                                    string token2 = sumcreditamount.ToString() + " تومان";
-                                    string token3 = RokhsarehClubDb.Credits.Sum(u => u.CreditAmount).ToString() + " تومان";
-                                    api.VerifyLookup(firstrecored.UserMobile, token1, token2, token3, smstemplate.SMSTemplateName);
+                                    string token1 = user.FullName;
+                                    string token2 = sumcreditamount.ToString();
+                                    string token3 = RokhsarehClubDb.Credits.Sum(u => u.CreditAmount).ToString();
+                                    var smssend = api.VerifyLookup(firstrecored.UserMobile, token1, token2, token3, smstemplate.SMSTemplateName);
                                 }
 
                                 resultmodel.Result = true;
                                 resultmodel.Message = "فاکتور با موفقیت ذخیره شد";
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
                                 resultmodel.Result = false;
                                 resultmodel.Message = "متاسفانه اختلالی در ثبت فاکتور بوجود آمده است. دقایقی دیگر مجددا امتحان کنید";
+                                resultmodel.Message += " " + ex.Message; 
                             }
                         }
                         else
@@ -373,16 +388,17 @@ namespace Rokhsare.Service.Controllers
 
                 if (token == "42345")
                 {
+                    string enMobileNumber = GetEncrypt(jsonmodel.UserMobile);
+
                     // بررسی وجود کاربر در سیستم
-                    if(RokhsarehClubDb.Users.Any(u => u.MobileNumber == jsonmodel.UserMobile || u.UserCode == jsonmodel.UserCode))
+                    if (RokhsarehClubDb.Users.Any(u => u.MobileNumber == enMobileNumber || u.UserCode == jsonmodel.UserCode))
                     {
                         // چنانچه کاربر وجود داشت ابتدا مقدار کش را فراخوانی میکنیم
                         // درصورتی که مقدار کش خالی باشد اطلاعات را از پایگاه داده دریافت میکنیم
 
-                        var user = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == jsonmodel.UserMobile || u.UserCode == jsonmodel.UserCode);
+                        var user = RokhsarehClubDb.Users.FirstOrDefault(u => (u.MobileNumber == enMobileNumber || u.UserCode == jsonmodel.UserCode) && u.BusinessUnitId == jsonmodel.BusinesID);
                         var key = string.Format("totalcredit_{0}", user.UserID);
-
-                        int _totalcredit = CacheHelper.GetData<int>(key);
+                        object _totalcredit = CacheHelper.GetData<object>(key);
 
                         if(_totalcredit != null)
                         {
@@ -397,11 +413,15 @@ namespace Rokhsare.Service.Controllers
 
                                 resultmodel.Result = true;
                                 resultmodel.Model = lastcredit;
+
+                                CacheHelper.SetDataToCacheDay(lastcredit, key, 1);
                             }
                             else
                             {
                                 resultmodel.Result = true;
                                 resultmodel.Model = 0;
+
+                                CacheHelper.SetDataToCacheDay(0, key, 1);
                             }
                         }
                     }
@@ -449,16 +469,16 @@ namespace Rokhsare.Service.Controllers
 
                 if (token == "42345")
                 {
-                    // بررسی club plan مربوط به business
-                    if (RokhsarehClubDb.BusinesUnitClubPlans.Any(u => u.BusinesUnitId == 1) || RokhsarehClubDb.DefaultClubPlans.Any(u => u.BusinessUnitId == 1))
-                    {
-                        var businessunitclubplan = RokhsarehClubDb.BusinesUnitClubPlans.FirstOrDefault(u => u.BusinesUnitId == 1).ClubPlan;
-                        var clubplanid = RokhsarehClubDb.ClubPlanDetails.FirstOrDefault(u => u.ClubPlanDetailId == businessunitclubplan.ClubPlanDetailId);
-                        var businessunit = RokhsarehClubDb.BusinessUnits.FirstOrDefault(u => u.BusinessUnitId == 1);
+                    // با توجه به اینکه تعداد رکورد ها ممکن است بیش از 1 باشد، و بعضی فیلدهای رکورد ها یکسان است
+                    // ما اطلاعات یک فیلد را دریافت و برای مشخص شدن اطلاعاتی نظیر کاربر و مبلغ پرداختی استفاده میکنیم
+                    var firstrecored = jsonmodel.Factures.First();
 
-                        // با توجه به اینکه تعداد رکورد ها ممکن است بیش از 1 باشد، و بعضی فیلدهای رکورد ها یکسان است
-                        // ما اطلاعات یک فیلد را دریافت و برای مشخص شدن اطلاعاتی نظیر کاربر و مبلغ پرداختی استفاده میکنیم
-                        var firstrecored = jsonmodel.Factures.First();
+                    // بررسی club plan مربوط به business
+                    if (RokhsarehClubDb.BusinesUnitClubPlans.Any(u => u.BusinesUnitId == firstrecored.ClubBusinessUnitID) || RokhsarehClubDb.DefaultClubPlans.Any(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
+                    {
+                        var businessunitclubplan = RokhsarehClubDb.BusinesUnitClubPlans.FirstOrDefault(u => u.BusinesUnitId == firstrecored.ClubBusinessUnitID).ClubPlan;
+                        var clubplanid = RokhsarehClubDb.ClubPlanDetails.FirstOrDefault(u => u.ClubPlanDetailId == businessunitclubplan.ClubPlanDetailId);
+                        var businessunit = RokhsarehClubDb.BusinessUnits.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
 
                         // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
                         string ebMobileNumber = GetEncrypt(firstrecored.UserMobile);
@@ -466,7 +486,7 @@ namespace Rokhsare.Service.Controllers
                         if (!RokhsarehClubDb.Users.Any(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName))
                         {
                             Rokhsare.Models.User userdb = new User();
-                            userdb.BusinessUnitId = 1;
+                            userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                             //userdb.NationalNumber = "";
                             userdb.RokhsarehUserId = firstrecored.UserId;
                             userdb.UserCode = firstrecored.UserCode;
@@ -495,11 +515,11 @@ namespace Rokhsare.Service.Controllers
                         // در اینجا فرستنده را در پایگاه داده چک میکنیم
                         // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
                         string enMobileNumber = GetEncrypt(firstrecored.CreatorMobile);
-                        if (!RokhsarehClubDb.Users.Any(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.CreatorName))
+                        if (!RokhsarehClubDb.Users.Any(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName))
                         {
                             // اگر فرستنده که نقش کارمند دارد در پایگاه داده وجود نداشت، ایجاد میکنیم
                             Rokhsare.Models.User userdb = new User();
-                            userdb.BusinessUnitId = 1;
+                            userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                             //userdb.NationalNumber = "";
                             userdb.RokhsarehUserId = firstrecored.Creator;
                             userdb.UserCode = firstrecored.CreatorCode;
@@ -555,52 +575,68 @@ namespace Rokhsare.Service.Controllers
                         RokhsarehClubDb.SaveChanges();
 
                         // دریافت اطلاعات کاربر 
-                        var user = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == firstrecored.UserMobile && u.FullName == firstrecored.UserName);
+                        var user = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName);
 
                         var key = string.Format("totalcredit_{0}", user.UserID);
-                        int _totalcredit = CacheHelper.GetData<int>(key);
+                        object _totalcredit = CacheHelper.GetData<object>(key);
+
+                        if(_totalcredit == null)
+                        {
+                            var lastcredit = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount);
+                            _totalcredit = lastcredit;
+                        }
+
+                        // این متغییر برای آن تعریف شده است که مطمئن شویم رخساره فاکتور تکراری برای باشگاه مشتریان ارسال نکرده باشد
+                        bool iserror = false;
                         foreach (var item in jsonmodel.Factures)
                         {
-                            // ذخیره  سازی در جدول Club Facture
-                            ClubFacture clubFacture = new ClubFacture();
-                            clubFacture.BusinessUnitId = 1;
-                            clubFacture.FactureId = item.FactureId;
-                            clubFacture.FactureTypeId = item.FactureTypeId;
-                            clubFacture.UserId = user.UserID;
-                            clubFacture.FactureDate = item.FactureDate.Value;
-                            clubFacture.FacturePrice = item.FacturePrice;
-
-                            // این خط بررسی میکند credit بیشتری از سمت رخساره برای کاربر ثبت نشود
-                            if(jsonmodel.CreditPrice > _totalcredit)
+                            if(!RokhsarehClubDb.ClubFactures.Any(u => u.FactureId == item.FactureId))
                             {
-                                jsonmodel.CreditPrice = _totalcredit;
-                            }
+                                // ذخیره  سازی در جدول Club Facture
+                                ClubFacture clubFacture = new ClubFacture();
+                                clubFacture.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
+                                clubFacture.FactureId = item.FactureId;
+                                clubFacture.FactureTypeId = item.FactureTypeId;
+                                clubFacture.UserId = user.UserID;
+                                clubFacture.FactureDate = item.FactureDate.Value;
+                                clubFacture.FacturePrice = item.FacturePrice;
 
-                            if (jsonmodel.CreditPrice < firstrecored.UserPayment)
-                                clubFacture.UserPayment = firstrecored.UserPayment - jsonmodel.CreditPrice;
+                                // این خط بررسی میکند credit بیشتری از سمت رخساره برای کاربر ثبت نشود
+                                if (jsonmodel.CreditPrice > Convert.ToInt32(_totalcredit))
+                                {
+                                    jsonmodel.CreditPrice = Convert.ToInt32(_totalcredit);
+                                }
+
+                                if (jsonmodel.CreditPrice < firstrecored.UserPayment)
+                                    clubFacture.UserPayment = firstrecored.UserPayment - jsonmodel.CreditPrice;
+                                else
+                                {
+                                    clubFacture.UserPayment = 0;
+                                }
+
+                                clubFacture.ProductId = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductTypeId == item.ProductTypeId && u.ProductName == item.ProductName).ProductId;
+                                clubFacture.ProductPrice = item.ProductPrice;
+                                if (item.ProductGroupName != null)
+                                    clubFacture.ProductGroupId = RokhsarehClubDb.ProductGroups.FirstOrDefault(u => u.ProductGroupName == item.ProductGroupName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID).ProductGroupId;
+                                clubFacture.ProductName = item.ProductName;
+                                clubFacture.ProductCount = item.ProductCount;
+                                clubFacture.BranchId = 1;
+                                if (item.Creator.HasValue)
+                                    clubFacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                clubFacture.CreatorDate = DateTime.Now;
+                                clubFacture.ClubFactureStatusId = 1;
+                                RokhsarehClubDb.ClubFactures.Add(clubFacture);
+                            }
                             else
                             {
-                                clubFacture.UserPayment = 0;
+                                iserror = true;
                             }
-
-                            clubFacture.ProductId = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductTypeId == item.ProductTypeId && u.ProductName == item.ProductName).ProductId;
-                            clubFacture.ProductPrice = item.ProductPrice;
-                            if (item.ProductGroupName != null)
-                                clubFacture.ProductGroupId = RokhsarehClubDb.ProductGroups.FirstOrDefault(u => u.ProductGroupName == item.ProductGroupName && u.BusinessUnitId == 1).ProductGroupId;
-                            clubFacture.ProductName = item.ProductName;
-                            clubFacture.ProductCount = item.ProductCount;
-                            clubFacture.BranchId = 1;
-                            if (item.Creator.HasValue)
-                                clubFacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
-                            clubFacture.CreatorDate = DateTime.Now;
-
-                            RokhsarehClubDb.ClubFactures.Add(clubFacture);
                         }
 
                         RokhsarehClubDb.SaveChanges();
 
                         // کسر مقدار credit استفاده شده
-                        if (jsonmodel.CreditPrice > 0)
+                        if (jsonmodel.CreditPrice > 0 && iserror == false)
                         {
                             // اضافه کردن اطلاعات در جدول Credit
                             Credit credit = new Credit();
@@ -611,7 +647,7 @@ namespace Rokhsare.Service.Controllers
                             if (RokhsarehClubDb.Credits.Count() == 0)
                                 credit.TotalCreditNow = credit.CreditAmount;
                             else
-                                credit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.ClubFactureId == credit.ClubFactureId).Sum(u => u.CreditAmount) + credit.CreditAmount;
+                                credit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount) + credit.CreditAmount;
 
                             credit.CreditTypeId = 1;
                             credit.CreditStatusId = 1;
@@ -620,11 +656,11 @@ namespace Rokhsare.Service.Controllers
                             credit.CreateDate = DateTime.Now;
 
                             RokhsarehClubDb.Credits.Add(credit);
-                        }
 
-                        // کش کردن مقدار اعتبار کاربر
-                        CacheHelper.Remove(key);
-                        CacheHelper.SetDataToCacheDay(_totalcredit - jsonmodel.CreditPrice, key, 1);
+                            // کش کردن مقدار اعتبار کاربر
+                            CacheHelper.Remove(key);
+                            CacheHelper.SetDataToCacheDay(Convert.ToInt32(_totalcredit) - jsonmodel.CreditPrice, key, 1);
+                        }
 
 
                         // آماده سازی سرویس کاوه نگار برای ارسال پیامک
@@ -640,17 +676,25 @@ namespace Rokhsare.Service.Controllers
                         {
                             RokhsarehClubDb.SaveChanges();
 
-                            if (smstemplatetokens.Count() == 3)
+                            if(iserror == false)
                             {
-                                // جاگذاری اطلاعات مربوط به token
-                                string token1 = user.UserName;
-                                string token2 = jsonmodel.CreditPrice + " تومان";
-                                string token3 = RokhsarehClubDb.Credits.Sum(u => u.CreditAmount).ToString() + " تومان";
-                                api.VerifyLookup(firstrecored.UserMobile, token1, token2, token3, smstemplate.SMSTemplateName);
-                            }
+                                if (smstemplatetokens.Count() == 3)
+                                {
+                                    // جاگذاری اطلاعات مربوط به token
+                                    string token1 = user.FullName;
+                                    string token2 = jsonmodel.CreditPrice + " تومان";
+                                    string token3 = RokhsarehClubDb.Credits.Sum(u => u.CreditAmount).ToString() + " تومان";
+                                    api.VerifyLookup(firstrecored.UserMobile, token1, token2, token3, smstemplate.SMSTemplateName);
+                                }
 
-                            resultmodel.Result = true;
-                            resultmodel.Message = "فاکتور با موفقیت ذخیره شد";
+                                resultmodel.Result = true;
+                                resultmodel.Message = "فاکتور با موفقیت ذخیره شد";
+                            }
+                            else
+                            {
+                                resultmodel.Result = false;
+                                resultmodel.Message = "فاکتور تکراری ارسال شده است";
+                            }
                         }
                         catch (Exception)
                         {
