@@ -330,8 +330,8 @@ namespace Rokhsare.Service.Controllers
                                     {
                                         // جاگذاری اطلاعات مربوط به token
                                         string token1 = user.FullName;
-                                        string token2 = sumcreditamount.ToString();
-                                        string token3 = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount).ToString();
+                                        string token2 = sumcreditamount.ToString("#,###");
+                                        string token3 = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount).ToString("#,###");
 
                                         string url = "https://api.kavenegar.com/v1/" + businessunit.SmsApiKey
                                             + "/verify/lookup.json?receptor=" + firstrecored.UserMobile
@@ -722,8 +722,8 @@ namespace Rokhsare.Service.Controllers
                                 {
                                     // جاگذاری اطلاعات مربوط به token
                                     string token1 = user.FullName;
-                                    string token2 = jsonmodel.CreditPrice.ToString();
-                                    string token3 = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount).ToString();
+                                    string token2 = jsonmodel.CreditPrice.ToString("#,###");
+                                    string token3 = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount).ToString("#,###");
 
                                     // Send by restsharp
                                     string url = "https://api.kavenegar.com/v1/" + businessunit.SmsApiKey
