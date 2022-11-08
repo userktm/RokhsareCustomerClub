@@ -45,4 +45,9 @@ namespace Rokhsare.Service.JsonModel
         public int BusinesID { get; set; }
         public int BranchID { get; set; }
     }
+
+    public class EncryptMobile
+    {
+        public string MobileEncrypted { get; set; }
+    }
 }

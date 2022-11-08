@@ -20,8 +20,6 @@ namespace Rokhsare.Models
         public int UserPayment { get; set; }
         public long ProductId { get; set; }
         public int ProductPrice { get; set; }
-        public Nullable<int> ProductGroupId { get; set; }
-        public string ProductName { get; set; }
         public int ProductCount { get; set; }
         public Nullable<int> BranchId { get; set; }
         public long Creator { get; set; }
@@ -31,7 +29,6 @@ namespace Rokhsare.Models
         public virtual Branch Branch { get; set; }
         public virtual BusinessUnit BusinessUnit { get; set; }
         public virtual FactureType FactureType { get; set; }
-        public virtual ProductGroup ProductGroup { get; set; }
         public virtual Product Product { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }

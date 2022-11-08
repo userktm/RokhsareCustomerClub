@@ -7,13 +7,13 @@ namespace Rokhsare.Models
     {
         public ProductGroup()
         {
-            this.ClubFactures = new List<ClubFacture>();
+            this.Products = new List<Product>();
         }
 
         public int ProductGroupId { get; set; }
         public int BusinessUnitId { get; set; }
         public string ProductGroupName { get; set; }
         public virtual BusinessUnit BusinessUnit { get; set; }
-        public virtual ICollection<ClubFacture> ClubFactures { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

@@ -26,6 +26,7 @@ namespace Rokhsare.Models.Mapping
             this.Property(t => t.ProductTypeId).HasColumnName("ProductTypeId");
             this.Property(t => t.ProductName).HasColumnName("ProductName");
             this.Property(t => t.ProductCode).HasColumnName("ProductCode");
+            this.Property(t => t.ProductGroupId).HasColumnName("ProductGroupId");
 
             // Relationships
             this.HasRequired(t => t.BusinessUnit)
@@ -34,7 +35,9 @@ namespace Rokhsare.Models.Mapping
             this.HasRequired(t => t.ProductType)
                 .WithMany(t => t.Products)
                 .HasForeignKey(d => d.ProductTypeId);
-
+            this.HasOptional(t => t.ProductGroup)
+                .WithMany(t => t.Products)
+                .HasForeignKey(d => d.ProductGroupId);
         }
     }
 }

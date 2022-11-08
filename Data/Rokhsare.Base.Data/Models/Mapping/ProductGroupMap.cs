@@ -10,10 +10,6 @@ namespace Rokhsare.Models.Mapping
             // Primary Key
             this.HasKey(t => t.ProductGroupId);
 
-            // Properties
-            this.Property(t => t.ProductGroupId)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
             this.Property(t => t.ProductGroupName)
                 .IsRequired()
                 .HasMaxLength(50);

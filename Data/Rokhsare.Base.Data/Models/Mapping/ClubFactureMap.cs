@@ -10,11 +10,6 @@ namespace Rokhsare.Models.Mapping
             // Primary Key
             this.HasKey(t => t.ClubFactureId);
 
-            // Properties
-            this.Property(t => t.ProductName)
-                .IsRequired()
-                .HasMaxLength(50);
-
             // Table & Column Mappings
             this.ToTable("ClubFactures");
             this.Property(t => t.ClubFactureId).HasColumnName("ClubFactureId");
@@ -27,8 +22,6 @@ namespace Rokhsare.Models.Mapping
             this.Property(t => t.UserPayment).HasColumnName("UserPayment");
             this.Property(t => t.ProductId).HasColumnName("ProductId");
             this.Property(t => t.ProductPrice).HasColumnName("ProductPrice");
-            this.Property(t => t.ProductGroupId).HasColumnName("ProductGroupId");
-            this.Property(t => t.ProductName).HasColumnName("ProductName");
             this.Property(t => t.ProductCount).HasColumnName("ProductCount");
             this.Property(t => t.BranchId).HasColumnName("BranchId");
             this.Property(t => t.Creator).HasColumnName("Creator");
@@ -48,9 +41,6 @@ namespace Rokhsare.Models.Mapping
             this.HasOptional(t => t.FactureType)
                 .WithMany(t => t.ClubFactures)
                 .HasForeignKey(d => d.FactureTypeId);
-            this.HasOptional(t => t.ProductGroup)
-                .WithMany(t => t.ClubFactures)
-                .HasForeignKey(d => d.ProductGroupId);
             this.HasRequired(t => t.Product)
                 .WithMany(t => t.ClubFactures)
                 .HasForeignKey(d => d.ProductId);
