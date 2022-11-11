@@ -173,10 +173,17 @@ namespace Rokhsare.Service.Controllers
 
                                             RokhsarehClubDb.Products.Add(product);
                                         }
+                                        else
+                                        {
+                                            var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductName == item.ProductName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
+                                            product.ProductCode = item.ProductId;
+
+                                            RokhsarehClubDb.SaveChanges();
+                                        }
                                     }
                                     else
                                     {
-                                        var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductCode == item.ProductId);
+                                        var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductCode == item.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
                                         product.ProductName = item.ProductName;
 
                                         RokhsarehClubDb.SaveChanges();
@@ -201,7 +208,7 @@ namespace Rokhsare.Service.Controllers
                                 {
                                     // بررسی فاکتور های ذخیره شده
                                     // ابتدا محصولی ثبت شده در پایگاه داده را پیدا میکنیم
-                                    var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.ProductName == item.ProductName);
+                                    var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductCode == firstrecored.ProductId && u.ProductName == item.ProductName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
                                     if (RokhsarehClubDb.ClubFactures.Any(u => u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
                                     {
                                         // در این جا مشخص شده این فاکتور وجود داشته و نیاز به ویرایش دارد
@@ -238,18 +245,46 @@ namespace Rokhsare.Service.Controllers
 
                                             // بعد از تغییر فاکتور، credit آن را نیز تغییر میدهیم
                                             var facturecredit = RokhsarehClubDb.Credits.FirstOrDefault(u => u.ClubFactureId == updatedfacture.ClubFactureId);
-                                            facturecredit.CreditAmount = (item.ProductPrice * clubplanid.PercentOFGiftCredit.Value) / 100;
-                                            // دریافت مجموع اعتبار های دریافتی مشتری
-                                            sumcreditamount += facturecredit.CreditAmount;
+                                            if(facturecredit == null)
+                                            {
+                                                // اضافه کردن اطلاعات در جدول Credit
+                                                Credit credit = new Credit();
+                                                credit.CreditAmount = (item.ProductPrice * clubplanid.PercentOFGiftCredit.Value) / 100;
+                                                // دریافت مجموع اعتبار های دریافتی مشتری
+                                                sumcreditamount += credit.CreditAmount;
 
-                                            if (RokhsarehClubDb.Credits.Count() == 0)
-                                                facturecredit.TotalCreditNow = facturecredit.CreditAmount;
+                                                int productiditem = Convert.ToInt32(RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.ProductName == item.ProductName && u.ProductTypeId == item.ProductTypeId).ProductId);
+                                                credit.ClubFactureId = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.BranchId == firstrecored.ClubBranchID && u.ProductId == productiditem).ClubFactureId;
+
+                                                if (RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Count() == 0)
+                                                    credit.TotalCreditNow = credit.CreditAmount;
+                                                else
+                                                    credit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount) + credit.CreditAmount;
+
+                                                credit.CreditTypeId = 1;
+                                                credit.CreditStatusId = 1;
+                                                credit.UserId = user.UserID;
+                                                credit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                                credit.CreateDate = DateTime.Now;
+                                                credit.CreditStatusId = 1;
+
+                                                RokhsarehClubDb.Credits.Add(credit);
+                                            }
                                             else
-                                                facturecredit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount) + facturecredit.CreditAmount;
+                                            {
+                                                facturecredit.CreditAmount = (item.ProductPrice * clubplanid.PercentOFGiftCredit.Value) / 100;
+                                                // دریافت مجموع اعتبار های دریافتی مشتری
+                                                sumcreditamount += facturecredit.CreditAmount;
 
-                                            facturecredit.CreditStatusId = 2;
-                                            facturecredit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
-                                            facturecredit.CreateDate = DateTime.Now;
+                                                if (RokhsarehClubDb.Credits.Count() == 0)
+                                                    facturecredit.TotalCreditNow = facturecredit.CreditAmount;
+                                                else
+                                                    facturecredit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount) + facturecredit.CreditAmount;
+
+                                                facturecredit.CreditStatusId = 2;
+                                                facturecredit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                                facturecredit.CreateDate = DateTime.Now;
+                                            }
                                         }
 
                                         RokhsarehClubDb.SaveChanges();
@@ -286,7 +321,7 @@ namespace Rokhsare.Service.Controllers
                                         int productiditem = Convert.ToInt32(RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.ProductName == item.ProductName && u.ProductTypeId == item.ProductTypeId).ProductId);
                                         credit.ClubFactureId = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.BranchId == firstrecored.ClubBranchID && u.ProductId == productiditem).ClubFactureId;
 
-                                        if (RokhsarehClubDb.Credits.Count() == 0)
+                                        if (RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Count() == 0)
                                             credit.TotalCreditNow = credit.CreditAmount;
                                         else
                                             credit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount) + credit.CreditAmount;
@@ -580,10 +615,10 @@ namespace Rokhsare.Service.Controllers
                         {
                             // در جدول ClubFacture فیلدهای دریافتی را ذخیره میکنیم
                             // اضافه کردن اطلاعات در جدول  Product Group
-                            if (!RokhsarehClubDb.ProductGroups.Any(u => u.ProductGroupName == item.ProductGroupName && u.BusinessUnitId == 1) && (item.ProductGroupName != null && item.ProductGroupName != ""))
+                            if (!RokhsarehClubDb.ProductGroups.Any(u => u.ProductGroupName == item.ProductGroupName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID) && (item.ProductGroupName != null && item.ProductGroupName != ""))
                             {
                                 ProductGroup productGroup = new ProductGroup();
-                                productGroup.BusinessUnitId = 1;
+                                productGroup.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                                 productGroup.ProductGroupName = item.ProductGroupName;
 
                                 RokhsarehClubDb.ProductGroups.Add(productGroup);
@@ -605,10 +640,17 @@ namespace Rokhsare.Service.Controllers
 
                                     RokhsarehClubDb.Products.Add(product);
                                 }
+                                else
+                                {
+                                    var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductName == item.ProductName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
+                                    product.ProductCode = item.ProductId;
+
+                                    RokhsarehClubDb.SaveChanges();
+                                }
                             }
                             else
                             {
-                                var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductCode == item.ProductId);
+                                var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductCode == item.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
                                 product.ProductName = item.ProductName;
 
                                 RokhsarehClubDb.SaveChanges();
