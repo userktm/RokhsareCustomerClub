@@ -67,31 +67,34 @@ namespace Rokhsare.Service.Controllers
                                 // بررسی اینکه آیا اطلاعات ارسال شده مربوط به کاربر، وجود دارد یا خیر
                                 if (!RokhsarehClubDb.Users.Any(u => u.RokhsarehUserId == firstrecored.UserId))
                                 {
-                                    Rokhsare.Models.User userdb = new User();
-                                    userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
-                                    //userdb.NationalNumber = "";
-                                    userdb.RokhsarehUserId = firstrecored.UserId;
-                                    userdb.UserCode = firstrecored.UserCode;
-                                    userdb.FullName = firstrecored.UserName;
-                                    userdb.MobileNumber = ebMobileNumber;
-                                    userdb.EmailConfirmed = false;
-                                    userdb.Active = true;
-                                    userdb.CreateDate = DateTime.Now;
-                                    userdb.MobileNumberConfirmed = false;
-                                    userdb.LockoutEnabled = false;
-                                    userdb.AccessFailedCount = 0;
-                                    userdb.UserTypeID = 1;
+                                    if(!RokhsarehClubDb.Users.Any(u => u.MobileNumber == firstrecored.UserMobile))
+                                    {
+                                        Rokhsare.Models.User userdb = new User();
+                                        userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
+                                        //userdb.NationalNumber = "";
+                                        userdb.RokhsarehUserId = firstrecored.UserId;
+                                        userdb.UserCode = firstrecored.UserCode;
+                                        userdb.FullName = firstrecored.UserName;
+                                        userdb.MobileNumber = ebMobileNumber;
+                                        userdb.EmailConfirmed = false;
+                                        userdb.Active = true;
+                                        userdb.CreateDate = DateTime.Now;
+                                        userdb.MobileNumberConfirmed = false;
+                                        userdb.LockoutEnabled = false;
+                                        userdb.AccessFailedCount = 0;
+                                        userdb.UserTypeID = 1;
 
-                                    RokhsarehClubDb.Users.Add(userdb);
-                                    RokhsarehClubDb.SaveChanges();
+                                        RokhsarehClubDb.Users.Add(userdb);
+                                        RokhsarehClubDb.SaveChanges();
 
-                                    // بعد از ثبت کاربر نیاز است نقش او را در سیستم تعیین و ثبت کنیم
-                                    UserRole userRole = new UserRole();
-                                    userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName).UserID;
-                                    userRole.RoleId = 1;
-                                    userRole.ExpireDate = DateTime.Now.AddYears(1);
+                                        // بعد از ثبت کاربر نیاز است نقش او را در سیستم تعیین و ثبت کنیم
+                                        UserRole userRole = new UserRole();
+                                        userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName).UserID;
+                                        userRole.RoleId = 1;
+                                        userRole.ExpireDate = DateTime.Now.AddYears(1);
 
-                                    RokhsarehClubDb.UserRoles.Add(userRole);
+                                        RokhsarehClubDb.UserRoles.Add(userRole);
+                                    }
                                 }
                                 else
                                 {
@@ -193,7 +196,7 @@ namespace Rokhsare.Service.Controllers
                                 RokhsarehClubDb.SaveChanges();
 
                                 // دریافت اطلاعات کاربر 
-                                var user = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName);
+                                var user = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName);
 
                                 // در اینجا فاکتور ها را ثبت میکنیم
                                 // ابتدا بررسی میکنیم فاکتور وجود داشته است یا خیر
