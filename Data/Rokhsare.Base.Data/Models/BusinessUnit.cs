@@ -15,6 +15,7 @@ namespace Rokhsare.Models
             this.ProductGroups = new List<ProductGroup>();
             this.Products = new List<Product>();
             this.Users = new List<User>();
+            this.ClubPlanDetails = new List<ClubPlanDetail>();
         }
 
         public int BusinessUnitId { get; set; }
@@ -35,6 +36,9 @@ namespace Rokhsare.Models
         public bool IsUpdating { get; set; }
         public string Description { get; set; }
         public string AdviseNumber { get; set; }
+        public Nullable<int> LimitUseCreditResort { get; set; }
+        public Nullable<int> LimitUseCreditForce { get; set; }
+        public Nullable<int> LimitUserCreditPercent { get; set; }
         public Nullable<System.DateTime> ExpireDate { get; set; }
         public virtual ICollection<Branch> Branches { get; set; }
         public virtual User User { get; set; }
@@ -46,5 +50,6 @@ namespace Rokhsare.Models
         public virtual ICollection<ProductGroup> ProductGroups { get; set; }
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<ClubPlanDetail> ClubPlanDetails { get; set; }
     }
 }

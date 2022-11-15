@@ -48,8 +48,6 @@ namespace Rokhsare.Models.Mapping
             this.Property(t => t.UserID).HasColumnName("UserID");
             this.Property(t => t.BusinessUnitId).HasColumnName("BusinessUnitId");
             this.Property(t => t.NationalNumber).HasColumnName("NationalNumber");
-            this.Property(t => t.RokhsarehUserId).HasColumnName("RokhsarehUserId");
-            this.Property(t => t.UserCode).HasColumnName("UserCode");
             this.Property(t => t.CardID).HasColumnName("CardID");
             this.Property(t => t.FullName).HasColumnName("FullName");
             this.Property(t => t.AvatarImage).HasColumnName("AvatarImage");

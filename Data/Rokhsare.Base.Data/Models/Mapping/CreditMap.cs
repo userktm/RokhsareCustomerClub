@@ -19,7 +19,6 @@ namespace Rokhsare.Models.Mapping
             this.Property(t => t.CreditStartDate).HasColumnName("CreditStartDate");
             this.Property(t => t.CreditEndDate).HasColumnName("CreditEndDate");
             this.Property(t => t.CreditExpireDate).HasColumnName("CreditExpireDate");
-            this.Property(t => t.TotalCreditNow).HasColumnName("TotalCreditNow");
             this.Property(t => t.CreditTypeId).HasColumnName("CreditTypeId");
             this.Property(t => t.CreditStatusId).HasColumnName("CreditStatusId");
             this.Property(t => t.CreditComment).HasColumnName("CreditComment");

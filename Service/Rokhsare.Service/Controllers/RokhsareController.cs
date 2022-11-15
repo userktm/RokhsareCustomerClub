@@ -65,65 +65,43 @@ namespace Rokhsare.Service.Controllers
                                 // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
                                 string ebMobileNumber = GetEncrypt(firstrecored.UserMobile);
                                 // بررسی اینکه آیا اطلاعات ارسال شده مربوط به کاربر، وجود دارد یا خیر
-                                if (!RokhsarehClubDb.Users.Any(u => u.RokhsarehUserId == firstrecored.UserId))
+                                if (!RokhsarehClubDb.Users.Any(u => u.MobileNumber == firstrecored.UserMobile))
                                 {
-                                    if(!RokhsarehClubDb.Users.Any(u => u.MobileNumber == firstrecored.UserMobile))
-                                    {
-                                        Rokhsare.Models.User userdb = new User();
-                                        userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
-                                        //userdb.NationalNumber = "";
-                                        userdb.RokhsarehUserId = firstrecored.UserId;
-                                        userdb.UserCode = firstrecored.UserCode;
-                                        userdb.FullName = firstrecored.UserName;
-                                        userdb.MobileNumber = ebMobileNumber;
-                                        userdb.EmailConfirmed = false;
-                                        userdb.Active = true;
-                                        userdb.CreateDate = DateTime.Now;
-                                        userdb.MobileNumberConfirmed = false;
-                                        userdb.LockoutEnabled = false;
-                                        userdb.AccessFailedCount = 0;
-                                        userdb.UserTypeID = 1;
+                                    Rokhsare.Models.User userdb = new User();
+                                    userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
+                                    //userdb.NationalNumber = "";
+                                    userdb.FullName = firstrecored.UserName;
+                                    userdb.MobileNumber = ebMobileNumber;
+                                    userdb.EmailConfirmed = false;
+                                    userdb.Active = true;
+                                    userdb.CreateDate = DateTime.Now;
+                                    userdb.MobileNumberConfirmed = false;
+                                    userdb.LockoutEnabled = false;
+                                    userdb.AccessFailedCount = 0;
+                                    userdb.UserTypeID = 1;
 
-                                        RokhsarehClubDb.Users.Add(userdb);
-                                        RokhsarehClubDb.SaveChanges();
+                                    RokhsarehClubDb.Users.Add(userdb);
+                                    RokhsarehClubDb.SaveChanges();
 
-                                        // بعد از ثبت کاربر نیاز است نقش او را در سیستم تعیین و ثبت کنیم
-                                        UserRole userRole = new UserRole();
-                                        userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName).UserID;
-                                        userRole.RoleId = 1;
-                                        userRole.ExpireDate = DateTime.Now.AddYears(1);
+                                    // بعد از ثبت کاربر نیاز است نقش او را در سیستم تعیین و ثبت کنیم
+                                    UserRole userRole = new UserRole();
+                                    userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName).UserID;
+                                    userRole.RoleId = 1;
+                                    userRole.ExpireDate = DateTime.Now.AddYears(1);
 
-                                        RokhsarehClubDb.UserRoles.Add(userRole);
-                                    }
-                                }
-                                else
-                                {
-                                    // در اینجا بررسی میکنیم کاربر موجود چنانچه شماره موبایلش عوض شده باشد در پایگاه داده تغییر میدهیم
-                                    var defaultuser = RokhsarehClubDb.Users.FirstOrDefault(u => u.RokhsarehUserId == firstrecored.UserId);
-
-                                    string EebMobileNumber = defaultuser.MobileNumber;
-                                    if (ebMobileNumber != EebMobileNumber)
-                                    {
-                                        defaultuser.MobileNumber = ebMobileNumber;
-                                        defaultuser.UserCode = firstrecored.UserCode;
-                                        defaultuser.FullName = firstrecored.UserName;
-                                        RokhsarehClubDb.SaveChanges();
-                                    }
-
+                                    RokhsarehClubDb.UserRoles.Add(userRole);
                                 }
 
                                 // در اینجا فرستنده را در پایگاه داده چک میکنیم
                                 // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
                                 string enMobileNumber = GetEncrypt(firstrecored.CreatorMobile);
                                 // با توجه به استثنایی که ممکن است مشتری خود کارمند باشد، ابتدا به عنوان مشتری فرستنده را چک میکنیم
-                                if (!RokhsarehClubDb.Users.Any(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName))
+                                if (!RokhsarehClubDb.Users.Any(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName))
                                 {
                                     // اگر فرستنده که نقش کارمند دارد در پایگاه داده وجود نداشت، ایجاد میکنیم
                                     Rokhsare.Models.User userdb = new User();
                                     userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                                     //userdb.NationalNumber = "";
-                                    userdb.RokhsarehUserId = firstrecored.Creator;
-                                    userdb.UserCode = firstrecored.CreatorCode;
                                     userdb.FullName = firstrecored.CreatorName;
                                     userdb.MobileNumber = enMobileNumber;
                                     userdb.EmailConfirmed = false;
@@ -139,7 +117,7 @@ namespace Rokhsare.Service.Controllers
 
                                     // بعد از ثبت کاربر نیاز است نقش او را در سیستم تعیین و ثبت کنیم
                                     UserRole userRole = new UserRole();
-                                    userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                    userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                                     userRole.RoleId = 2;
                                     userRole.ExpireDate = DateTime.Now.AddYears(1);
 
@@ -241,8 +219,8 @@ namespace Rokhsare.Service.Controllers
                                             updatedfacture.ProductPrice = item.ProductPrice;
                                             updatedfacture.ProductCount = item.ProductCount;
                                             updatedfacture.BranchId = firstrecored.ClubBranchID;
-                                            if (item.Creator.HasValue)
-                                                updatedfacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                            if (!string.IsNullOrEmpty(item.CreatorMobile))
+                                                updatedfacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                                             updatedfacture.CreatorDate = DateTime.Now;
                                             updatedfacture.ClubFactureStatusId = 2;
 
@@ -259,15 +237,10 @@ namespace Rokhsare.Service.Controllers
                                                 int productiditem = Convert.ToInt32(RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.ProductName == item.ProductName && u.ProductTypeId == item.ProductTypeId).ProductId);
                                                 credit.ClubFactureId = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.BranchId == firstrecored.ClubBranchID && u.ProductId == productiditem).ClubFactureId;
 
-                                                if (RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Count() == 0)
-                                                    credit.TotalCreditNow = credit.CreditAmount;
-                                                else
-                                                    credit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount) + credit.CreditAmount;
-
                                                 credit.CreditTypeId = 1;
                                                 credit.CreditStatusId = 1;
                                                 credit.UserId = user.UserID;
-                                                credit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                                credit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                                                 credit.CreateDate = DateTime.Now;
                                                 credit.CreditStatusId = 1;
 
@@ -279,13 +252,8 @@ namespace Rokhsare.Service.Controllers
                                                 // دریافت مجموع اعتبار های دریافتی مشتری
                                                 sumcreditamount += facturecredit.CreditAmount;
 
-                                                if (RokhsarehClubDb.Credits.Count() == 0)
-                                                    facturecredit.TotalCreditNow = facturecredit.CreditAmount;
-                                                else
-                                                    facturecredit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount) + facturecredit.CreditAmount;
-
                                                 facturecredit.CreditStatusId = 2;
-                                                facturecredit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                                facturecredit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                                                 facturecredit.CreateDate = DateTime.Now;
                                             }
                                         }
@@ -307,8 +275,8 @@ namespace Rokhsare.Service.Controllers
                                         clubFacture.ProductPrice = item.ProductPrice;
                                         clubFacture.ProductCount = item.ProductCount;
                                         clubFacture.BranchId = 1;
-                                        if (item.Creator.HasValue)
-                                            clubFacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID; ;
+                                        if (!string.IsNullOrEmpty(item.CreatorMobile))
+                                            clubFacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID; ;
                                         clubFacture.CreatorDate = DateTime.Now;
                                         clubFacture.ClubFactureStatusId = 1;
 
@@ -324,15 +292,10 @@ namespace Rokhsare.Service.Controllers
                                         int productiditem = Convert.ToInt32(RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.ProductName == item.ProductName && u.ProductTypeId == item.ProductTypeId).ProductId);
                                         credit.ClubFactureId = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.BranchId == firstrecored.ClubBranchID && u.ProductId == productiditem).ClubFactureId;
 
-                                        if (RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Count() == 0)
-                                            credit.TotalCreditNow = credit.CreditAmount;
-                                        else
-                                            credit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount) + credit.CreditAmount;
-
                                         credit.CreditTypeId = 1;
                                         credit.CreditStatusId = 1;
                                         credit.UserId = user.UserID;
-                                        credit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                        credit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                                         credit.CreateDate = DateTime.Now;
                                         credit.CreditStatusId = 1;
 
@@ -444,20 +407,29 @@ namespace Rokhsare.Service.Controllers
                     string enMobileNumber = GetEncrypt(jsonmodel.UserMobile);
 
                     // بررسی وجود کاربر در سیستم
-                    if (RokhsarehClubDb.Users.Any(u => u.MobileNumber == enMobileNumber || u.UserCode == jsonmodel.UserCode))
+                    if (RokhsarehClubDb.Users.Any(u => u.MobileNumber == enMobileNumber))
                     {
                         // چنانچه کاربر وجود داشت ابتدا مقدار کش را فراخوانی میکنیم
                         // درصورتی که مقدار کش خالی باشد اطلاعات را از پایگاه داده دریافت میکنیم
 
-                        var user = RokhsarehClubDb.Users.FirstOrDefault(u => (u.MobileNumber == enMobileNumber || u.UserCode == jsonmodel.UserCode) && u.BusinessUnitId == jsonmodel.BusinesID);
+                        GetUserAmountModel getUserAmountModel = new GetUserAmountModel();
+
+                        var user = RokhsarehClubDb.Users.FirstOrDefault(u => (u.MobileNumber == enMobileNumber) && u.BusinessUnitId == jsonmodel.BusinesID);
+                        var bussinesunit = RokhsarehClubDb.BusinessUnits.FirstOrDefault(u => u.BusinessUnitId == jsonmodel.BusinesID);
                         var key = string.Format("totalcredit_{0}", user.UserID);
                         CacheHelper.Remove(key);
                         object _totalcredit = CacheHelper.GetData<object>(key);
 
                         if(_totalcredit != null)
                         {
+                            getUserAmountModel.TotalCredit = Convert.ToInt32(_totalcredit);
+                            getUserAmountModel.UsableTotalCredit = Convert.ToInt32(_totalcredit);
+                            getUserAmountModel.LimitUseCreditForce = bussinesunit.LimitUseCreditForce;
+                            getUserAmountModel.LimitUseCreditResort = bussinesunit.LimitUseCreditResort;
+                            getUserAmountModel.LimitUserCreditPercent = bussinesunit.LimitUserCreditPercent;
+
                             resultmodel.Result = true;
-                            resultmodel.Model = _totalcredit;
+                            resultmodel.Model = getUserAmountModel;
                         }
                         else
                         {
@@ -465,15 +437,27 @@ namespace Rokhsare.Service.Controllers
                             {
                                 var lastcredit = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount);
 
+                                getUserAmountModel.TotalCredit = lastcredit;
+                                getUserAmountModel.UsableTotalCredit = lastcredit;
+                                getUserAmountModel.LimitUseCreditForce = bussinesunit.LimitUseCreditForce;
+                                getUserAmountModel.LimitUseCreditResort = bussinesunit.LimitUseCreditResort;
+                                getUserAmountModel.LimitUserCreditPercent = bussinesunit.LimitUserCreditPercent;
+
                                 resultmodel.Result = true;
-                                resultmodel.Model = lastcredit;
+                                resultmodel.Model = getUserAmountModel;
 
                                 CacheHelper.SetDataToCacheDay(lastcredit, key, 1);
                             }
                             else
                             {
+                                getUserAmountModel.TotalCredit = 0;
+                                getUserAmountModel.UsableTotalCredit = 0;
+                                getUserAmountModel.LimitUseCreditForce = bussinesunit.LimitUseCreditForce;
+                                getUserAmountModel.LimitUseCreditResort = bussinesunit.LimitUseCreditResort;
+                                getUserAmountModel.LimitUserCreditPercent = bussinesunit.LimitUserCreditPercent;
+
                                 resultmodel.Result = true;
-                                resultmodel.Model = 0;
+                                resultmodel.Model = getUserAmountModel;
 
                                 CacheHelper.SetDataToCacheDay(0, key, 1);
                             }
@@ -537,13 +521,11 @@ namespace Rokhsare.Service.Controllers
                         // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
                         string ebMobileNumber = GetEncrypt(firstrecored.UserMobile);
                         // بررسی اینکه آیا اطلاعات ارسال شده مربوط به کاربر، وجود دارد یا خیر
-                        if (!RokhsarehClubDb.Users.Any(u => u.RokhsarehUserId == firstrecored.UserId))
+                        if (!RokhsarehClubDb.Users.Any(u => u.MobileNumber == firstrecored.UserMobile))
                         {
                             Rokhsare.Models.User userdb = new User();
                             userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                             //userdb.NationalNumber = "";
-                            userdb.RokhsarehUserId = firstrecored.UserId;
-                            userdb.UserCode = firstrecored.UserCode;
                             userdb.FullName = firstrecored.UserName;
                             userdb.MobileNumber = ebMobileNumber;
                             userdb.EmailConfirmed = false;
@@ -559,7 +541,7 @@ namespace Rokhsare.Service.Controllers
 
                             // بعد از ثبت کاربر نیاز است نقش او را در سیستم تعیین و ثبت کنیم
                             UserRole userRole = new UserRole();
-                            userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName).UserID;
+                            userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName).UserID;
                             userRole.RoleId = 1;
                             userRole.ExpireDate = DateTime.Now.AddYears(1);
 
@@ -568,13 +550,12 @@ namespace Rokhsare.Service.Controllers
                         else
                         {
                             // در اینجا بررسی میکنیم کاربر موجود چنانچه شماره موبایلش عوض شده باشد در پایگاه داده تغییر میدهیم
-                            var defaultuser = RokhsarehClubDb.Users.FirstOrDefault(u => u.RokhsarehUserId == firstrecored.UserId);
+                            var defaultuser = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == firstrecored.UserMobile);
 
                             string EebMobileNumber = GetEncrypt(defaultuser.MobileNumber);
                             if (ebMobileNumber != EebMobileNumber)
                             {
                                 defaultuser.MobileNumber = ebMobileNumber;
-                                defaultuser.UserCode = firstrecored.UserCode;
                                 defaultuser.FullName = firstrecored.UserName;
                                 RokhsarehClubDb.SaveChanges();
                             }
@@ -583,14 +564,12 @@ namespace Rokhsare.Service.Controllers
                         // در اینجا فرستنده را در پایگاه داده چک میکنیم
                         // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
                         string enMobileNumber = GetEncrypt(firstrecored.CreatorMobile);
-                        if (!RokhsarehClubDb.Users.Any(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName))
+                        if (!RokhsarehClubDb.Users.Any(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName))
                         {
                             // اگر فرستنده که نقش کارمند دارد در پایگاه داده وجود نداشت، ایجاد میکنیم
                             Rokhsare.Models.User userdb = new User();
                             userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
                             //userdb.NationalNumber = "";
-                            userdb.RokhsarehUserId = firstrecored.Creator;
-                            userdb.UserCode = firstrecored.CreatorCode;
                             userdb.FullName = firstrecored.CreatorName;
                             userdb.MobileNumber = enMobileNumber;
                             userdb.EmailConfirmed = false;
@@ -606,7 +585,7 @@ namespace Rokhsare.Service.Controllers
 
                             // بعد از ثبت کاربر نیاز است نقش او را در سیستم تعیین و ثبت کنیم
                             UserRole userRole = new UserRole();
-                            userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                            userRole.UserId = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                             userRole.RoleId = 2;
                             userRole.ExpireDate = DateTime.Now.AddYears(1);
 
@@ -663,7 +642,7 @@ namespace Rokhsare.Service.Controllers
                         RokhsarehClubDb.SaveChanges();
 
                         // دریافت اطلاعات کاربر 
-                        var user = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.UserCode && u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName);
+                        var user = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == ebMobileNumber && u.FullName == firstrecored.UserName);
 
                         var key = string.Format("totalcredit_{0}", user.UserID);
                         object _totalcredit = CacheHelper.GetData<object>(key);
@@ -706,8 +685,8 @@ namespace Rokhsare.Service.Controllers
                                 clubFacture.ProductPrice = item.ProductPrice;
                                 clubFacture.ProductCount = item.ProductCount;
                                 clubFacture.BranchId = 1;
-                                if (item.Creator.HasValue)
-                                    clubFacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                if (!string.IsNullOrEmpty(item.CreatorMobile))
+                                    clubFacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                                 clubFacture.CreatorDate = DateTime.Now;
                                 clubFacture.ClubFactureStatusId = 1;
                                 RokhsarehClubDb.ClubFactures.Add(clubFacture);
@@ -729,15 +708,10 @@ namespace Rokhsare.Service.Controllers
 
                             credit.ClubFactureId = null;
 
-                            if (RokhsarehClubDb.Credits.Count() == 0)
-                                credit.TotalCreditNow = credit.CreditAmount;
-                            else
-                                credit.TotalCreditNow = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount) + credit.CreditAmount;
-
                             credit.CreditTypeId = 1;
                             credit.CreditStatusId = 1;
                             credit.UserId = user.UserID;
-                            credit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.UserCode == firstrecored.CreatorCode && u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                            credit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                             credit.CreateDate = DateTime.Now;
 
                             RokhsarehClubDb.Credits.Add(credit);

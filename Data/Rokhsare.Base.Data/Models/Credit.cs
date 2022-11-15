@@ -11,7 +11,6 @@ namespace Rokhsare.Models
         public Nullable<System.DateTime> CreditStartDate { get; set; }
         public Nullable<System.DateTime> CreditEndDate { get; set; }
         public Nullable<System.DateTime> CreditExpireDate { get; set; }
-        public int TotalCreditNow { get; set; }
         public int CreditTypeId { get; set; }
         public int CreditStatusId { get; set; }
         public string CreditComment { get; set; }

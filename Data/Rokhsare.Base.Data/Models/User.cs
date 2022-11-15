@@ -26,8 +26,6 @@ namespace Rokhsare.Models
         public long UserID { get; set; }
         public int BusinessUnitId { get; set; }
         public string NationalNumber { get; set; }
-        public Nullable<long> RokhsarehUserId { get; set; }
-        public string UserCode { get; set; }
         public Nullable<long> CardID { get; set; }
         public string FullName { get; set; }
         public string AvatarImage { get; set; }

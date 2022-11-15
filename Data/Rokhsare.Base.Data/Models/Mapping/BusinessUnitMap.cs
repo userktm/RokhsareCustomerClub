@@ -54,6 +54,9 @@ namespace Rokhsare.Models.Mapping
             this.Property(t => t.IsUpdating).HasColumnName("IsUpdating");
             this.Property(t => t.Description).HasColumnName("Description");
             this.Property(t => t.AdviseNumber).HasColumnName("AdviseNumber");
+            this.Property(t => t.LimitUseCreditResort).HasColumnName("LimitUseCreditResort");
+            this.Property(t => t.LimitUseCreditForce).HasColumnName("LimitUseCreditForce");
+            this.Property(t => t.LimitUserCreditPercent).HasColumnName("LimitUserCreditPercent");
             this.Property(t => t.ExpireDate).HasColumnName("ExpireDate");
 
             // Relationships

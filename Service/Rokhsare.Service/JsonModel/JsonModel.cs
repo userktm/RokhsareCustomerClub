@@ -7,8 +7,6 @@ namespace Rokhsare.Service.JsonModel
 {
     public class FactureViewJsonModel
     {
-        public Nullable<int> UserId { get; set; }
-        public string UserCode { get; set; }
         public string UserName { get; set; }
         public string UserMobile { get; set; }
         public int FactureTypeId { get; set; }
@@ -23,8 +21,6 @@ namespace Rokhsare.Service.JsonModel
         public string ProductGroupName { get; set; }
         public string ProductName { get; set; }
         public int ProductCount { get; set; }
-        public Nullable<int> Creator { get; set; }
-        public string CreatorCode { get; set; }
         public string CreatorName { get; set; }
         public string CreatorMobile { get; set; }
         public int IsDeleted { get; set; }
