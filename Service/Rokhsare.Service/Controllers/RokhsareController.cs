@@ -423,7 +423,13 @@ namespace Rokhsare.Service.Controllers
                         if(_totalcredit != null)
                         {
                             getUserAmountModel.TotalCredit = Convert.ToInt32(_totalcredit);
-                            getUserAmountModel.UsableTotalCredit = Convert.ToInt32(_totalcredit);
+                            if (bussinesunit.LimitUseCreditForce.HasValue)
+                            {
+                                if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditForce)
+                                    getUserAmountModel.UsableTotalCredit = Convert.ToInt32(_totalcredit);
+                                else
+                                    getUserAmountModel.UsableTotalCredit = 0;
+                            }
                             getUserAmountModel.LimitUseCreditForce = bussinesunit.LimitUseCreditForce;
                             getUserAmountModel.LimitUseCreditResort = bussinesunit.LimitUseCreditResort;
                             getUserAmountModel.LimitUserCreditPercent = bussinesunit.LimitUserCreditPercent;
@@ -438,7 +444,13 @@ namespace Rokhsare.Service.Controllers
                                 var lastcredit = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount);
 
                                 getUserAmountModel.TotalCredit = lastcredit;
-                                getUserAmountModel.UsableTotalCredit = lastcredit;
+                                if (bussinesunit.LimitUseCreditForce.HasValue)
+                                {
+                                    if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditForce)
+                                        getUserAmountModel.UsableTotalCredit = lastcredit;
+                                    else
+                                        getUserAmountModel.UsableTotalCredit = 0;
+                                }
                                 getUserAmountModel.LimitUseCreditForce = bussinesunit.LimitUseCreditForce;
                                 getUserAmountModel.LimitUseCreditResort = bussinesunit.LimitUseCreditResort;
                                 getUserAmountModel.LimitUserCreditPercent = bussinesunit.LimitUserCreditPercent;

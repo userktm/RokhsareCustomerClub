@@ -14,9 +14,6 @@ namespace Rokhsare.Models.Mapping
             this.Property(t => t.NationalNumber)
                 .HasMaxLength(10);
 
-            this.Property(t => t.UserCode)
-                .HasMaxLength(50);
-
             this.Property(t => t.FullName)
                 .IsRequired()
                 .HasMaxLength(256);
