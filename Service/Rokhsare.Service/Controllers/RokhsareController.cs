@@ -65,7 +65,7 @@ namespace Rokhsare.Service.Controllers
                                 // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
                                 string ebMobileNumber = GetEncrypt(firstrecored.UserMobile);
                                 // بررسی اینکه آیا اطلاعات ارسال شده مربوط به کاربر، وجود دارد یا خیر
-                                if (!RokhsarehClubDb.Users.Any(u => u.MobileNumber == firstrecored.UserMobile))
+                                if (!RokhsarehClubDb.Users.Any(u => u.MobileNumber == ebMobileNumber))
                                 {
                                     Rokhsare.Models.User userdb = new User();
                                     userdb.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
@@ -96,7 +96,7 @@ namespace Rokhsare.Service.Controllers
                                 // جهت بررسی موبایل کاربر ابتدا آن را کد میکنیم
                                 string enMobileNumber = GetEncrypt(firstrecored.CreatorMobile);
                                 // با توجه به استثنایی که ممکن است مشتری خود کارمند باشد، ابتدا به عنوان مشتری فرستنده را چک میکنیم
-                                if (!RokhsarehClubDb.Users.Any(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName))
+                                if (!RokhsarehClubDb.Users.Any(u => u.MobileNumber == enMobileNumber))
                                 {
                                     // اگر فرستنده که نقش کارمند دارد در پایگاه داده وجود نداشت، ایجاد میکنیم
                                     Rokhsare.Models.User userdb = new User();
