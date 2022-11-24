@@ -205,6 +205,7 @@ namespace Rokhsare.Service.Controllers
                                             var facturecredit = RokhsarehClubDb.Credits.FirstOrDefault(u => u.ClubFactureId == updatedfacture.ClubFactureId);
 
                                             facturecredit.CreditStatusId = 3;
+                                            facturecredit.ModifireDate = DateTime.Now;
                                         }
                                         else
                                         {
@@ -221,7 +222,6 @@ namespace Rokhsare.Service.Controllers
                                             updatedfacture.BranchId = firstrecored.ClubBranchID;
                                             if (!string.IsNullOrEmpty(item.CreatorMobile))
                                                 updatedfacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
-                                            updatedfacture.CreatorDate = DateTime.Now;
                                             updatedfacture.ClubFactureStatusId = 2;
 
                                             // بعد از تغییر فاکتور، credit آن را نیز تغییر میدهیم
@@ -254,7 +254,7 @@ namespace Rokhsare.Service.Controllers
 
                                                 facturecredit.CreditStatusId = 2;
                                                 facturecredit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
-                                                facturecredit.CreateDate = DateTime.Now;
+                                                facturecredit.ModifireDate = DateTime.Now;
                                             }
                                         }
 
@@ -332,7 +332,7 @@ namespace Rokhsare.Service.Controllers
                                         // جاگذاری اطلاعات مربوط به token
                                         string token1 = user.FullName;
                                         string token2 = sumcreditamount.ToString("#,###");
-                                        string token3 = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount).ToString("#,###");
+                                        string token3 = GetUserAmount(enMobileNumber, firstrecored.ClubBusinessUnitID.Value).ToString("#,###");
 
                                         string url = "https://api.kavenegar.com/v1/" + businessunit.SmsApiKey
                                             + "/verify/lookup.json?receptor=" + firstrecored.UserMobile
@@ -754,7 +754,7 @@ namespace Rokhsare.Service.Controllers
                                     // جاگذاری اطلاعات مربوط به token
                                     string token1 = user.FullName;
                                     string token2 = jsonmodel.CreditPrice.ToString("#,###");
-                                    string token3 = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID).Sum(u => u.CreditAmount).ToString("#,###");
+                                    string token3 = GetUserAmount(enMobileNumber, firstrecored.ClubBusinessUnitID.Value).ToString("#,###");
 
                                     // Send by restsharp
                                     string url = "https://api.kavenegar.com/v1/" + businessunit.SmsApiKey
@@ -811,6 +811,39 @@ namespace Rokhsare.Service.Controllers
             var response = client.Execute(req);
 
             return response.Content.Replace('"', ' ').Trim();
+        }
+
+        public int GetUserAmount(string enMobileNumber, int BusinesID)
+        {
+            if (RokhsarehClubDb.Users.Any(u => u.MobileNumber == enMobileNumber))
+            {
+                var user = RokhsarehClubDb.Users.FirstOrDefault(u => (u.MobileNumber == enMobileNumber) && u.BusinessUnitId == BusinesID);
+                var bussinesunit = RokhsarehClubDb.BusinessUnits.FirstOrDefault(u => u.BusinessUnitId == BusinesID);
+
+                if (bussinesunit.LimitUseCreditForce.HasValue)
+                {
+                    if (RokhsarehClubDb.Credits.Any(u => u.UserId == user.UserID))
+                    {
+                        var lastcredit = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount);
+
+                        if (bussinesunit.LimitUseCreditForce.HasValue)
+                        {
+                            if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditForce)
+                                return lastcredit;
+                            else
+                                return 0;
+                        }
+                        else
+                            return 0;
+                    }
+                    else
+                        return 0;
+                }
+                else
+                    return 0;
+            }
+            else
+                return 0;
         }
         #endregion
     }
