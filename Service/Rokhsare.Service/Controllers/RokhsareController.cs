@@ -332,7 +332,12 @@ namespace Rokhsare.Service.Controllers
                                         // جاگذاری اطلاعات مربوط به token
                                         string token1 = user.FullName;
                                         string token2 = sumcreditamount.ToString("#,###");
-                                        string token3 = GetUserAmount(enMobileNumber, firstrecored.ClubBusinessUnitID.Value).ToString("#,###");
+                                        string token3 = "";
+                                        int allamount = GetUserAmount(enMobileNumber, firstrecored.ClubBusinessUnitID.Value);
+                                        if (allamount == 0)
+                                            token3 = "0";
+                                        else
+                                            token3 = allamount.ToString("#,###");
 
                                         string url = "https://api.kavenegar.com/v1/" + businessunit.SmsApiKey
                                             + "/verify/lookup.json?receptor=" + firstrecored.UserMobile
@@ -754,7 +759,12 @@ namespace Rokhsare.Service.Controllers
                                     // جاگذاری اطلاعات مربوط به token
                                     string token1 = user.FullName;
                                     string token2 = jsonmodel.CreditPrice.ToString("#,###");
-                                    string token3 = GetUserAmount(enMobileNumber, firstrecored.ClubBusinessUnitID.Value).ToString("#,###");
+                                    string token3 = "";
+                                    int allamount = GetUserAmount(enMobileNumber, firstrecored.ClubBusinessUnitID.Value);
+                                    if (allamount == 0)
+                                        token3 = "0";
+                                    else
+                                        token3 = allamount.ToString("#,###");
 
                                     // Send by restsharp
                                     string url = "https://api.kavenegar.com/v1/" + businessunit.SmsApiKey
@@ -820,19 +830,14 @@ namespace Rokhsare.Service.Controllers
                 var user = RokhsarehClubDb.Users.FirstOrDefault(u => (u.MobileNumber == enMobileNumber) && u.BusinessUnitId == BusinesID);
                 var bussinesunit = RokhsarehClubDb.BusinessUnits.FirstOrDefault(u => u.BusinessUnitId == BusinesID);
 
-                if (bussinesunit.LimitUseCreditForce.HasValue)
+                if (bussinesunit.LimitUseCreditResort.HasValue)
                 {
                     if (RokhsarehClubDb.Credits.Any(u => u.UserId == user.UserID))
                     {
                         var lastcredit = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount);
 
-                        if (bussinesunit.LimitUseCreditForce.HasValue)
-                        {
-                            if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditForce)
-                                return lastcredit;
-                            else
-                                return 0;
-                        }
+                        if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditResort)
+                            return lastcredit;
                         else
                             return 0;
                     }
