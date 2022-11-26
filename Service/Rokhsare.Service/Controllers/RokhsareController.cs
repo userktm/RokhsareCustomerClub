@@ -333,7 +333,7 @@ namespace Rokhsare.Service.Controllers
                                         string token1 = user.FullName;
                                         string token2 = sumcreditamount.ToString("#,###");
                                         string token3 = "";
-                                        int allamount = GetUserAmount(enMobileNumber, firstrecored.ClubBusinessUnitID.Value);
+                                        int allamount = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount);
                                         if (allamount == 0)
                                             token3 = "0";
                                         else
@@ -760,7 +760,7 @@ namespace Rokhsare.Service.Controllers
                                     string token1 = user.FullName;
                                     string token2 = jsonmodel.CreditPrice.ToString("#,###");
                                     string token3 = "";
-                                    int allamount = GetUserAmount(enMobileNumber, firstrecored.ClubBusinessUnitID.Value);
+                                    int allamount = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount);
                                     if (allamount == 0)
                                         token3 = "0";
                                     else
@@ -836,7 +836,8 @@ namespace Rokhsare.Service.Controllers
                     {
                         var lastcredit = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount);
 
-                        if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditResort)
+                        int listcount = RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count();
+                        if (listcount >= bussinesunit.LimitUseCreditResort)
                             return lastcredit;
                         else
                             return 0;
