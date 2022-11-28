@@ -190,7 +190,7 @@ namespace Rokhsare.Service.Controllers
                                     // بررسی فاکتور های ذخیره شده
                                     // ابتدا محصولی ثبت شده در پایگاه داده را پیدا میکنیم
                                     var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductName == item.ProductName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
-                                    if (RokhsarehClubDb.ClubFactures.Any(u => u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
+                                    if (RokhsarehClubDb.ClubFactures.Any(u => u.ClubFactureStatusId > 1 && u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
                                     {
                                         // در این جا مشخص شده این فاکتور وجود داشته و نیاز به ویرایش دارد
                                         // ابتدا بررسی میکنیم وضعیت آن به حالت حذف شده در آمده یا نه
@@ -304,6 +304,45 @@ namespace Rokhsare.Service.Controllers
                                     }
                                 }
 
+                                // در اینجا فاکتورها را ثبت میکنیم
+                                // ابتدا آی دی های فاکتور را دریافت کرده، سپس بر اساس اقلام ارسالی بررسی میکنیم
+                                // اگر فاکتور از قبل در باشگاه ذخیره شده نباشد مسیر اضافه کردن را جلو میبریم
+                                // اگر این فاکتور قبلا موجود باشد به نوع isdelete آن نگاه میکنیم و خود فاکتور را حذف منطقی میکنیم
+                                // اگر فاکتور موجود باشد و نوع isdelete آن تغییر نکرده باشد، به تعداد اقلام نگاه میکنیم
+                                // در صورت ارسال نشدن قلم جنسی آن را حذف شده تلقی میکنیم
+                                // بعد از بررسی اقلام فاکتور credit آن را بررسی میکنیم
+                                var getfactureid = jsonmodel.Select(u => u.FactureId).Distinct().ToList();
+                                foreach(var item in getfactureid)
+                                {
+                                    // در اینجا فاکتور های این آیتم را بررسی میکنیم
+                                    if(RokhsarehClubDb.ClubFactures.Any(u => u.FactureId == item))
+                                    {
+                                        // در این حالت یعنی این شماره فاکتور رخساره قبلا در سیستم ثبت شده است و اکنون یا ویرایش و یا حذف شده است
+                                        var jsonmodelitem = jsonmodel.Where(u => u.FactureId == item).ToList();
+                                        var firstitem = jsonmodel.First();
+                                        var productitem = jsonmodelitem.Select(u => u.ProductName).ToList();
+                                        var clubproduct = RokhsarehClubDb.Products.Where(u => productitem.Contains(u.ProductName) && u.BusinessUnitId == firstitem.ClubBusinessUnitID).Select(u => u.ProductId).ToList();
+
+                                        // اقلام فاکتوری که محصول آن دریافت نشده است را حذف میکنیم
+                                        var customerclubfacture = RokhsarehClubDb.ClubFactures.Where(u => u.FactureId == item && !clubproduct.Contains(u.ProductId)).ToList();
+                                        var customerclubfactureid = customerclubfacture.Select(u => u.ClubFactureId).ToList();
+                                        var credits = RokhsarehClubDb.Credits.Where(u => customerclubfactureid.Contains(u.ClubFactureId.Value)).ToList();
+
+                                        foreach(var subitem in customerclubfacture)
+                                        {
+                                            subitem.ClubFactureStatusId = 3;
+                                        }
+
+                                        foreach (var subitem in credits)
+                                        {
+                                            subitem.CreditStatusId = 3;
+                                        }
+
+                                        RokhsarehClubDb.SaveChanges();
+                                    }
+                                }
+
+
                                 // ذخیره اطلاعات فعلی
                                 RokhsarehClubDb.SaveChanges();
 
@@ -311,7 +350,7 @@ namespace Rokhsare.Service.Controllers
                                 var key = string.Format("totalcredit_{0}", user.UserID);
                                 int _totalcredit = CacheHelper.GetData<int>(key);
                                 CacheHelper.Remove(key);
-                                CacheHelper.SetDataToCacheDay(sumcreditamount + _totalcredit, key, 1);
+                                CacheHelper.SetDataToCacheDay(RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount), key, 1);
 
 
                                 // آماده سازی سرویس کاوه نگار برای ارسال پیامک
