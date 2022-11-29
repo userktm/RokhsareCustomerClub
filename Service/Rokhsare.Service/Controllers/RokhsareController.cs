@@ -190,44 +190,105 @@ namespace Rokhsare.Service.Controllers
                                     // بررسی فاکتور های ذخیره شده
                                     // ابتدا محصولی ثبت شده در پایگاه داده را پیدا میکنیم
                                     var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductName == item.ProductName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
-                                    if (RokhsarehClubDb.ClubFactures.Any(u => u.ClubFactureStatusId == 2 && u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
+                                    if (RokhsarehClubDb.ClubFactures.Any(u => u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
                                     {
                                         // در این جا مشخص شده این فاکتور وجود داشته و نیاز به ویرایش دارد
                                         // ابتدا بررسی میکنیم وضعیت آن به حالت حذف شده در آمده یا نه
 
                                         var updatedfacture = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
-                                        if (item.IsDeleted == 1)
+                                        if(updatedfacture.ClubFactureStatusId == 1 || updatedfacture.ClubFactureStatusId == 2)
                                         {
-                                            // در این جا مشخص شده است که وضعیت فاکتور به حالت حذف شده در آمده است
-                                            updatedfacture.ClubFactureStatusId = 3;
+                                            if (item.IsDeleted == 1)
+                                            {
+                                                // در این جا مشخص شده است که وضعیت فاکتور به حالت حذف شده در آمده است
+                                                updatedfacture.ClubFactureStatusId = 3;
 
-                                            // بعد از تغییر فاکتور، credit آن را نیز تغییر میدهیم
-                                            var facturecredit = RokhsarehClubDb.Credits.FirstOrDefault(u => u.ClubFactureId == updatedfacture.ClubFactureId);
+                                                // بعد از تغییر فاکتور، credit آن را نیز تغییر میدهیم
+                                                var facturecredit = RokhsarehClubDb.Credits.FirstOrDefault(u => u.ClubFactureId == updatedfacture.ClubFactureId);
 
-                                            facturecredit.CreditStatusId = 3;
-                                            facturecredit.ModifireDate = DateTime.Now;
+                                                facturecredit.CreditStatusId = 3;
+                                                facturecredit.ModifireDate = DateTime.Now;
+                                            }
+                                            else
+                                            {
+                                                // در اینجا مشخص است وضعیت فاکتور به حالت تغییر یافته درآمده است
+                                                // بعد از تغییر فاکنور credit آن را هم عوض میکنیم
+                                                updatedfacture.FactureId = item.FactureId;
+                                                updatedfacture.FactureTypeId = item.FactureTypeId;
+                                                updatedfacture.FactureDate = item.FactureDate.Value;
+                                                updatedfacture.FacturePrice = item.FacturePrice;
+                                                updatedfacture.UserPayment = firstrecored.UserPayment;
+                                                updatedfacture.ProductId = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductTypeId == item.ProductTypeId && u.ProductName == item.ProductName).ProductId;
+                                                updatedfacture.ProductPrice = item.ProductPrice;
+                                                updatedfacture.ProductCount = item.ProductCount;
+                                                updatedfacture.BranchId = firstrecored.ClubBranchID;
+                                                if (!string.IsNullOrEmpty(item.CreatorMobile))
+                                                    updatedfacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                                updatedfacture.ClubFactureStatusId = 2;
+
+                                                // بعد از تغییر فاکتور، credit آن را نیز تغییر میدهیم
+                                                var facturecredit = RokhsarehClubDb.Credits.FirstOrDefault(u => u.ClubFactureId == updatedfacture.ClubFactureId);
+                                                if (facturecredit == null)
+                                                {
+                                                    // اضافه کردن اطلاعات در جدول Credit
+                                                    Credit credit = new Credit();
+                                                    credit.CreditAmount = (item.ProductPrice * clubplanid.PercentOFGiftCredit.Value) / 100;
+                                                    // دریافت مجموع اعتبار های دریافتی مشتری
+                                                    sumcreditamount += credit.CreditAmount;
+
+                                                    int productiditem = Convert.ToInt32(RokhsarehClubDb.Products.FirstOrDefault(u => u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.ProductName == item.ProductName && u.ProductTypeId == item.ProductTypeId).ProductId);
+                                                    credit.ClubFactureId = RokhsarehClubDb.ClubFactures.FirstOrDefault(u => u.FactureId == item.FactureId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID && u.BranchId == firstrecored.ClubBranchID && u.ProductId == productiditem).ClubFactureId;
+
+                                                    credit.CreditTypeId = 1;
+                                                    credit.CreditStatusId = 1;
+                                                    credit.UserId = user.UserID;
+                                                    credit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                                    credit.CreateDate = DateTime.Now;
+                                                    credit.CreditStatusId = 1;
+
+                                                    RokhsarehClubDb.Credits.Add(credit);
+                                                }
+                                                else
+                                                {
+                                                    facturecredit.CreditAmount = (item.ProductPrice * clubplanid.PercentOFGiftCredit.Value) / 100;
+                                                    // دریافت مجموع اعتبار های دریافتی مشتری
+                                                    sumcreditamount += facturecredit.CreditAmount;
+
+                                                    facturecredit.CreditStatusId = 2;
+                                                    facturecredit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
+                                                    facturecredit.ModifireDate = DateTime.Now;
+                                                }
+                                            }
                                         }
                                         else
                                         {
-                                            // در اینجا مشخص است وضعیت فاکتور به حالت تغییر یافته درآمده است
-                                            // بعد از تغییر فاکنور credit آن را هم عوض میکنیم
-                                            updatedfacture.FactureId = item.FactureId;
-                                            updatedfacture.FactureTypeId = item.FactureTypeId;
-                                            updatedfacture.FactureDate = item.FactureDate.Value;
-                                            updatedfacture.FacturePrice = item.FacturePrice;
-                                            updatedfacture.UserPayment = firstrecored.UserPayment;
-                                            updatedfacture.ProductId = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductTypeId == item.ProductTypeId && u.ProductName == item.ProductName).ProductId;
-                                            updatedfacture.ProductPrice = item.ProductPrice;
-                                            updatedfacture.ProductCount = item.ProductCount;
-                                            updatedfacture.BranchId = firstrecored.ClubBranchID;
-                                            if (!string.IsNullOrEmpty(item.CreatorMobile))
-                                                updatedfacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
-                                            updatedfacture.ClubFactureStatusId = 2;
-
-                                            // بعد از تغییر فاکتور، credit آن را نیز تغییر میدهیم
-                                            var facturecredit = RokhsarehClubDb.Credits.FirstOrDefault(u => u.ClubFactureId == updatedfacture.ClubFactureId);
-                                            if(facturecredit == null)
+                                            if(RokhsarehClubDb.ClubFactures.Any(u => u.ClubFactureStatusId == 3 && u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
                                             {
+
+                                            }
+                                            else
+                                            {
+                                                // ذخیره  سازی در جدول Club Facture
+                                                ClubFacture clubFacture = new ClubFacture();
+                                                clubFacture.BusinessUnitId = firstrecored.ClubBusinessUnitID.Value;
+                                                clubFacture.FactureId = item.FactureId;
+                                                clubFacture.FactureTypeId = item.FactureTypeId;
+                                                clubFacture.UserId = user.UserID;
+                                                clubFacture.FactureDate = item.FactureDate.Value;
+                                                clubFacture.FacturePrice = item.FacturePrice;
+                                                clubFacture.UserPayment = firstrecored.UserPayment;
+                                                clubFacture.ProductId = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductTypeId == item.ProductTypeId && u.ProductName == item.ProductName).ProductId;
+                                                clubFacture.ProductPrice = item.ProductPrice;
+                                                clubFacture.ProductCount = item.ProductCount;
+                                                clubFacture.BranchId = 1;
+                                                if (!string.IsNullOrEmpty(item.CreatorMobile))
+                                                    clubFacture.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID; ;
+                                                clubFacture.CreatorDate = DateTime.Now;
+                                                clubFacture.ClubFactureStatusId = 1;
+
+                                                RokhsarehClubDb.ClubFactures.Add(clubFacture);
+                                                RokhsarehClubDb.SaveChanges();
+
                                                 // اضافه کردن اطلاعات در جدول Credit
                                                 Credit credit = new Credit();
                                                 credit.CreditAmount = (item.ProductPrice * clubplanid.PercentOFGiftCredit.Value) / 100;
@@ -245,16 +306,7 @@ namespace Rokhsare.Service.Controllers
                                                 credit.CreditStatusId = 1;
 
                                                 RokhsarehClubDb.Credits.Add(credit);
-                                            }
-                                            else
-                                            {
-                                                facturecredit.CreditAmount = (item.ProductPrice * clubplanid.PercentOFGiftCredit.Value) / 100;
-                                                // دریافت مجموع اعتبار های دریافتی مشتری
-                                                sumcreditamount += facturecredit.CreditAmount;
-
-                                                facturecredit.CreditStatusId = 2;
-                                                facturecredit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
-                                                facturecredit.ModifireDate = DateTime.Now;
+                                                RokhsarehClubDb.SaveChanges();
                                             }
                                         }
 
