@@ -190,7 +190,7 @@ namespace Rokhsare.Service.Controllers
                                     // بررسی فاکتور های ذخیره شده
                                     // ابتدا محصولی ثبت شده در پایگاه داده را پیدا میکنیم
                                     var product = RokhsarehClubDb.Products.FirstOrDefault(u => u.ProductName == item.ProductName && u.BusinessUnitId == firstrecored.ClubBusinessUnitID);
-                                    if (RokhsarehClubDb.ClubFactures.Any(u => u.ClubFactureStatusId > 1 && u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
+                                    if (RokhsarehClubDb.ClubFactures.Any(u => u.ClubFactureStatusId == 2 && u.FactureId == item.FactureId && u.ProductId == product.ProductId && u.BusinessUnitId == firstrecored.ClubBusinessUnitID))
                                     {
                                         // در این جا مشخص شده این فاکتور وجود داشته و نیاز به ویرایش دارد
                                         // ابتدا بررسی میکنیم وضعیت آن به حالت حذف شده در آمده یا نه
