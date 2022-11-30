@@ -404,7 +404,10 @@ namespace Rokhsare.Service.Controllers
                                 var key = string.Format("totalcredit_{0}", user.UserID);
                                 int _totalcredit = CacheHelper.GetData<int>(key);
                                 CacheHelper.Remove(key);
-                                CacheHelper.SetDataToCacheDay(RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount), key, 1);
+                                if(RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Count() > 0)
+                                    CacheHelper.SetDataToCacheDay(RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount), key, 1);
+                                else
+                                    CacheHelper.SetDataToCacheDay(0, key, 1);
 
 
                                 // آماده سازی سرویس کاوه نگار برای ارسال پیامک
