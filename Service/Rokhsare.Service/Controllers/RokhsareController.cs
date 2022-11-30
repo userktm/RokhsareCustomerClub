@@ -208,6 +208,7 @@ namespace Rokhsare.Service.Controllers
 
                                                 facturecredit.CreditStatusId = 3;
                                                 facturecredit.ModifireDate = DateTime.Now;
+                                                facturecredit.Modifire = user.UserID;
                                             }
                                             else
                                             {
@@ -257,6 +258,7 @@ namespace Rokhsare.Service.Controllers
                                                     facturecredit.CreditStatusId = 2;
                                                     facturecredit.Creator = RokhsarehClubDb.Users.FirstOrDefault(u => u.MobileNumber == enMobileNumber && u.FullName == firstrecored.CreatorName).UserID;
                                                     facturecredit.ModifireDate = DateTime.Now;
+                                                    facturecredit.Modifire = user.UserID;
                                                 }
                                             }
                                         }
@@ -417,7 +419,7 @@ namespace Rokhsare.Service.Controllers
                                 try
                                 {
                                     RokhsarehClubDb.SaveChanges();
-
+                                    string smsexception = "";
                                     if (smstemplatetokens.Count() == 3)
                                     {
                                         // جاگذاری اطلاعات مربوط به token
@@ -436,10 +438,12 @@ namespace Rokhsare.Service.Controllers
                                         var client = new RestSharp.RestClient(url);
                                         RestSharp.RestRequest req = new RestSharp.RestRequest(RestSharp.Method.GET);
                                         var response = client.Execute(req);
+                                        smsexception = response.Content;
                                     }
 
                                     resultmodel.Result = true;
                                     resultmodel.Message = "فاکتور با موفقیت ذخیره شد";
+                                    resultmodel.Model = smsexception;
                                 }
                                 catch (Exception ex)
                                 {
@@ -519,9 +523,9 @@ namespace Rokhsare.Service.Controllers
                         if(_totalcredit != null)
                         {
                             getUserAmountModel.TotalCredit = Convert.ToInt32(_totalcredit);
-                            if (bussinesunit.LimitUseCreditForce.HasValue)
+                            if (bussinesunit.LimitUseCreditResort.HasValue)
                             {
-                                if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditForce)
+                                if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditResort)
                                     getUserAmountModel.UsableTotalCredit = Convert.ToInt32(_totalcredit);
                                 else
                                     getUserAmountModel.UsableTotalCredit = 0;
@@ -540,9 +544,9 @@ namespace Rokhsare.Service.Controllers
                                 var lastcredit = RokhsarehClubDb.Credits.Where(u => u.UserId == user.UserID && u.CreditStatusId < 3).Sum(u => u.CreditAmount);
 
                                 getUserAmountModel.TotalCredit = lastcredit;
-                                if (bussinesunit.LimitUseCreditForce.HasValue)
+                                if (bussinesunit.LimitUseCreditResort.HasValue)
                                 {
-                                    if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditForce)
+                                    if (RokhsarehClubDb.ClubFactures.Where(u => u.UserId == user.UserID).Select(u => u.FactureId).Distinct().Count() >= bussinesunit.LimitUseCreditResort)
                                         getUserAmountModel.UsableTotalCredit = lastcredit;
                                     else
                                         getUserAmountModel.UsableTotalCredit = 0;
