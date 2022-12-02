@@ -1,3 +1,4 @@
+using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using Rokhsare.Models.Mapping;
@@ -82,6 +83,24 @@ namespace Rokhsare.Models
             modelBuilder.Configurations.Add(new SMSTemplateMap());
             modelBuilder.Configurations.Add(new SMSTemplateTokenMap());
             modelBuilder.Configurations.Add(new SMSTemplateTypeMap());
+        }
+
+        public override int SaveChanges()
+        {
+            var transaction = this.Database.BeginTransaction();
+
+            try
+            {
+                int finalreturn = base.SaveChanges();
+                transaction.Commit();
+
+                return finalreturn;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                return 0;
+            }
         }
     }
 }
